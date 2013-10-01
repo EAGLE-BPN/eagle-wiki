@@ -68,13 +68,19 @@ def main():
 			pubPlaceClaim = pywikibot.Claim(site, 'P28')
 			pubPlaceClaim.setTarget(pubPlace)
 			
+			# Publisher
+			publisher = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//publisher')[0])
+			print 'Publisher: ' + publisher
+			publisherClaim = pywikibot.Claim(site, 'P41')
+			publisherClaim.setTarget(publisher)
+			
 			# Date
 			dateText = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//date')[0])
 			print 'Date: ' + dateText
 			dateClaim = pywikibot.Claim(site, 'P29')
 			dateClaim.setTarget(dateText)
 			
-			transClaim.addSources([authorClaim, pubClaim, dateClaim, pubPlaceClaim])
+			transClaim.addSources([authorClaim, pubClaim, dateClaim, publisherClaim, pubPlaceClaim])
 
 # Adds a claim to an ItemPage.		
 def addClaimToItem(site, page, id, value):
@@ -84,7 +90,10 @@ def addClaimToItem(site, page, id, value):
 
 # Get inner element text, stripping tags of sub-elements.
 def elementText(elem):
-	return ''.join(elem.itertext()).strip()
+	text = ''.join(elem.itertext()).strip()
+	text = re.sub('\n', ' ', text)
+	text = re.sub('\s{2,}', ' ', text)
+	return text
 
 if __name__ == "__main__":
     try:
