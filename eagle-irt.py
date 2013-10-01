@@ -2,15 +2,6 @@
 
 import pywikibot, csv
 
-# Maps the CSV fields to Wikibase properties.
-csvMap = {
-		0: 'P40', # BSR ID
-		1: 'P21', # Author
-		2: 'P25', # IPR
-		3: 'P32', # Periodical title
-		4: 'P11', # EN translation
-	}
-
 def main():
 	args = pywikibot.handleArgs()
 	
@@ -36,9 +27,26 @@ def main():
 			choice = 'y'
 		if choice in ['Y', 'y']:
 			page = pywikibot.ItemPage.createNew(site, labels={"en": row[0]}) # New item
-			for i in csvMap.keys():
-				# These are separate edits/requests
-				addClaimToItem(site, page, csvMap[i], row[i])
+			
+			# BSR ID
+			addClaimToItem(site, page, 'P40', row[0])
+			
+			# IPR
+			addClaimToItem(site, page, 'P25', row[2])
+			
+			# EN Translation
+			transClaim = pywikibot.Claim(site, 'P11')
+			transClaim.setTarget(row[4])
+			page.addClaim(transClaim)
+			
+			periodicalClaim = pywikibot.Claim(site, 'P32')
+			periodicalClaim.setTarget(row[3])
+			
+			authorClaim = pywikibot.Claim(site, 'P21')
+			authorClaim.setTarget(row[1])
+			
+			transClaim.addSources([authorClaim, periodicalClaim])
+			
 	f.close()
 
 # Adds a claim to an ItemPage.		
