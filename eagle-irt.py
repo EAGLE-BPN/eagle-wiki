@@ -32,7 +32,9 @@ def main():
 		pywikibot.output('IPR: ' + ipr)
 		
 		# Translation EN:
-		translationEn = elementText(root.findall('./text/body/div[@type=\'translation\']/p')[0])
+		transElem = root.findall('./text/body/div[@type=\'translation\']/p')[0]
+		normalizeTranslation(transElem)
+		translationEn = elementText(transElem)
 		pywikibot.output('EN translation: ' + translationEn)
 		
 		# Authors
@@ -108,6 +110,14 @@ def elementText(elem):
 	text = re.sub('\n', ' ', text)
 	text = re.sub('\s{2,}', ' ', text)
 	return text
+
+def normalizeTranslation(elem):
+	notes = elem.findall('.//note')
+	for n in notes: # Adds braces
+		n.text = '(' + n.text + ')'
+	gaps = elem.findall('.//gap')
+	for g in gaps:
+		g.text = '---'
 
 if __name__ == "__main__":
     try:
