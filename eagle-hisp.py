@@ -16,13 +16,14 @@ def main():
 		tree = ET.parse(DATA_DIR + fileName)
 		root = tree.getroot()
 		
-		# ID
-		title = elementText(root.findall('./title')[0])
-		pywikibot.output("\n>>>>> " + title + " <<<<<\n")
+		# HispaniaEpigrafica ID + label
+		hep = fileName[0:-4] # Remove extension (.xml)
+		label = 'HEp ' + hep
+		pywikibot.output("\n>>>>> " + label + " <<<<<\n")
+		pywikibot.output('HEp ID: ' + hep)
 		
-		# HispaniaEpigrafica ID
-		hispId = fileName[0:-4] # Remove extension (.xml)
-		pywikibot.output('HispaniaEpigrafica ID: ' + hispId)
+		# Title
+		title = elementText(root.findall('./title')[0])
 		
 		# IPR
 		ipr = elementText(root.findall('./ipr')[0])[1:-1] # Strip quotes
@@ -46,9 +47,9 @@ def main():
 			all = True
 			choice = 'y'
 		if choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site, labels={'es': title}) # New item
+			page = pywikibot.ItemPage.createNew(site, labels={'es': label}, descriptions={'es': title}) # New item
 			
-			addClaimToItem(site, page, 'P22', hispId)
+			addClaimToItem(site, page, 'P22', hep)
 			addClaimToItem(site, page, 'P25', ipr)
 			
 			transClaim = pywikibot.Claim(site, 'P14')
