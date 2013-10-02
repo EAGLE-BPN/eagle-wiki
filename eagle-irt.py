@@ -15,10 +15,51 @@ def main():
 	for fileName in os.listdir(DATA_DIR):
 		tree = ET.parse(DATA_DIR + fileName)
 		root = tree.getroot()
-		title = elementText(root.findall('./teiHeader/fileDesc/titleStmt/title')[0])
-	
+		
+		# BSR
+		bsr = fileName[0:-4] # Remove extension (.xml)
+		
 		# ID
-		pywikibot.output(">>>>> " + title + " <<<<<")
+		pywikibot.output("\n>>>>> " + bsr + " <<<<<\n")
+		
+		# Title
+		title = elementText(root.findall('./teiHeader/fileDesc/titleStmt/title')[0])
+		pywikibot.output('Title: ' + title)
+		
+		# IPR
+		ipr = elementText(root.findall('./teiHeader/fileDesc/publicationStmt/p')[0])
+		ipr = re.sub(' \(.*?\)', '', ipr)
+		pywikibot.output('IPR: ' + ipr)
+		
+		# Translation EN:
+		translationEn = elementText(root.findall('./text/body/div[@type=\'translation\']/p')[0])
+		pywikibot.output('EN translation: ' + translationEn)
+		
+		# Authors
+		authors = root.findall('./teiHeader/fileDesc/titleStmt/editor')
+		authorString = ''
+		for au in authors:
+			authorString += au.text + ', '
+		authorString = authorString[0:-2]
+		pywikibot.output('Authors: ' + authorString)
+		
+		# Publication title
+		pubTitle = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//title')[0])
+		pywikibot.output('PubTitle: ' + pubTitle)
+		
+		# Publication place
+		pubPlace = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//pubPlace')[0])
+		pywikibot.output('PubPlace: ' + pubPlace)
+		
+		# Publisher
+		publisher = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//publisher')[0])
+		pywikibot.output('Publisher: ' + publisher)
+		
+		# Date
+		dateText = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//date')[0])
+		pywikibot.output('Date: ' + dateText)
+		
+		pywikibot.output('') # Newline
 		
 		if not all:
 			choice = pywikibot.inputChoice(u"Proceed?",  ['Yes', 'No', 'All'], ['y', 'N', 'a'], 'N')
@@ -28,55 +69,28 @@ def main():
 			all = True
 			choice = 'y'
 		if choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site, labels={'en': title}) # New item
+			# New item
+			page = pywikibot.ItemPage.createNew(site, labels={'en': bsr}, descriptions={'en': title})
 			
-			# BSR ID
-			addClaimToItem(site, page, 'P40', fileName[0:-4]) # Remove extension
-			
-			# IPR
-			ipr = elementText(root.findall('./teiHeader/fileDesc/publicationStmt/p')[0])
-			ipr = re.sub(' \(.*?\)', '', ipr)
-			print 'IPR: ' + ipr
+			addClaimToItem(site, page, 'P40', bsr) # Remove extension
 			addClaimToItem(site, page, 'P25', ipr)
 			
-			# EN Translation
 			transClaim = pywikibot.Claim(site, 'P11')
-			translationEn = elementText(root.findall('./text/body/div[@type=\'translation\']/p')[0])
-			print 'EN: ' + translationEn
 			transClaim.setTarget(translationEn)
 			page.addClaim(transClaim)
 			
-			# Authors
-			authors = root.findall('./teiHeader/fileDesc/titleStmt/editor')
-			authorString = ''
-			for au in authors:
-				authorString += au.text + ', '
-			authorString = authorString[0:-2]
-			print authorString
 			authorClaim = pywikibot.Claim(site, 'P21')
 			authorClaim.setTarget(authorString)
 			
-			# Publication title
-			pubTitle = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//title')[0])
-			print 'PubTitle: ' + pubTitle
 			pubClaim = pywikibot.Claim(site, 'P26')
 			pubClaim.setTarget(pubTitle)
 			
-			# Publication place
-			pubPlace = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//pubPlace')[0])
-			print 'PubPlace: ' + pubPlace
 			pubPlaceClaim = pywikibot.Claim(site, 'P28')
 			pubPlaceClaim.setTarget(pubPlace)
 			
-			# Publisher
-			publisher = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//publisher')[0])
-			print 'Publisher: ' + publisher
 			publisherClaim = pywikibot.Claim(site, 'P41')
 			publisherClaim.setTarget(publisher)
 			
-			# Date
-			dateText = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//date')[0])
-			print 'Date: ' + dateText
 			dateClaim = pywikibot.Claim(site, 'P29')
 			dateClaim.setTarget(dateText)
 			
