@@ -86,7 +86,7 @@ def main():
 			# New item
 			page = pywikibot.ItemPage.createNew(site, labels={'en': bsr}, descriptions={'en': title})
 			
-			addClaimToItem(site, page, 'P40', bsr) # Remove extension
+			addClaimToItem(site, page, 'P40', bsr)
 			addClaimToItem(site, page, 'P24', edh)
 			addClaimToItem(site, page, 'P25', ipr)
 			
