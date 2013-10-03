@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import pywikibot, os, re
+import pywikibot, os, re, csv
 import xml.etree.ElementTree as ET
 
 DATA_DIR = '/Users/pietro/Dropbox/Dati/British School of Rome/'
@@ -11,6 +11,14 @@ def main():
 	# pywikibot/families/eagle_family.py
 	site = pywikibot.Site('en', 'eagle').data_repository()
 	all = False
+	
+	# EDH ids
+	edhIds = {}
+	f = open('irt-edh.txt', 'r')
+	reader = csv.reader(f, delimiter="\t")
+	for row in reader:
+		edhIds[row[1]] = row[0]
+	f.close()
 	
 	for fileName in os.listdir(DATA_DIR):
 		tree = ET.parse(DATA_DIR + fileName)
@@ -25,6 +33,10 @@ def main():
 		# Title
 		title = elementText(root.findall('./teiHeader/fileDesc/titleStmt/title')[0])
 		pywikibot.output('Title: ' + title)
+		
+		# EDH
+		edh = edhIds[bsr]
+		pywikibot.output('EDH: ' + edh)
 		
 		# IPR
 		ipr = elementText(root.findall('./teiHeader/fileDesc/publicationStmt/p')[0])
@@ -75,6 +87,7 @@ def main():
 			page = pywikibot.ItemPage.createNew(site, labels={'en': bsr}, descriptions={'en': title})
 			
 			addClaimToItem(site, page, 'P40', bsr) # Remove extension
+			addClaimToItem(site, page, 'P24', edh)
 			addClaimToItem(site, page, 'P25', ipr)
 			
 			transClaim = pywikibot.Claim(site, 'P11')
