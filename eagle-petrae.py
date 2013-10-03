@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import pywikibot, os, re, csv
+import pywikibot, csv
 
 DATA_FILE = '/Users/pietro/Dropbox/Dati/petrae_translation.csv'
 
 def main():
+	# Handles command-line arguments for pywikibot.
 	args = pywikibot.handleArgs()
 	
 	# pywikibot/families/eagle_family.py
@@ -25,7 +26,7 @@ def main():
 			pywikibot.output('WARNING: no translation!')
 		pywikibot.output('Image: ' + image)
 		
-		pywikibot.output('') # Newline
+		pywikibot.output('') # newline
 		
 		if not all:
 			choice = pywikibot.inputChoice(u"Proceed?",  ['Yes', 'No', 'All'], ['y', 'N', 'a'], 'N')
@@ -35,18 +36,19 @@ def main():
 			all = True
 			choice = 'y'
 		if choice in ['Y', 'y']:
-			# New item
 			page = pywikibot.ItemPage.createNew(site, labels={'fr': id})
 			
 			addClaimToItem(site, page, 'P33', id) # Petrae ID
 			if translationFr:
 				addClaimToItem(site, page, 'P15', translationFr)
+			
+			# P10 wants Wikimedia Commons image link!
 			# addClaimToItem(site, page, 'P10', image)
 			
 	f.close()
-
-# Adds a claim to an ItemPage.		
+	
 def addClaimToItem(site, page, id, value):
+	"""Adds a claim to an ItemPage."""
 	claim = pywikibot.Claim(site, id)
 	claim.setTarget(value)
 	page.addClaim(claim)

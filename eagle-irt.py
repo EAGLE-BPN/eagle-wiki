@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 DATA_DIR = '/Users/pietro/Dropbox/Dati/British School of Rome/'
 
 def main():
+	# Handles command-line arguments for pywikibot.
 	args = pywikibot.handleArgs()
 	
 	# pywikibot/families/eagle_family.py
@@ -73,7 +74,7 @@ def main():
 		dateText = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//date')[0])
 		pywikibot.output('Date: ' + dateText)
 		
-		pywikibot.output('') # Newline
+		pywikibot.output('') # newline
 		
 		if not all:
 			choice = pywikibot.inputChoice(u"Proceed?",  ['Yes', 'No', 'All'], ['y', 'N', 'a'], 'N')
@@ -83,7 +84,6 @@ def main():
 			all = True
 			choice = 'y'
 		if choice in ['Y', 'y']:
-			# New item
 			page = pywikibot.ItemPage.createNew(site, labels={'en': bsr}, descriptions={'en': title})
 			
 			addClaimToItem(site, page, 'P40', bsr)
@@ -111,14 +111,14 @@ def main():
 			
 			transClaim.addSources([authorClaim, pubClaim, dateClaim, publisherClaim, pubPlaceClaim])
 
-# Adds a claim to an ItemPage.		
 def addClaimToItem(site, page, id, value):
+	"""Adds a claim to an ItemPage."""
 	claim = pywikibot.Claim(site, id)
 	claim.setTarget(value)
 	page.addClaim(claim)
 
-# Get inner element text, stripping tags of sub-elements.
 def elementText(elem):
+	"""Gets inner element text, stripping tags of sub-elements."""
 	text = ''.join(elem.itertext()).strip()
 	text = re.sub('\n', ' ', text)
 	text = re.sub('\s{2,}', ' ', text)

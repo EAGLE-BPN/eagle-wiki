@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 DATA_DIR = '/Users/pietro/Dropbox/Dati/Hispania epigrafica/'
 
 def main():
+	# Handles command-line arguments for pywikibot.
 	args = pywikibot.handleArgs()
 	
 	# pywikibot/families/eagle_family.py
@@ -37,7 +38,7 @@ def main():
 		author = elementText(root.findall('./translator')[0])
 		pywikibot.output('Author: ' + author)
 		
-		pywikibot.output('') # Newline
+		pywikibot.output('') # newline
 		
 		if not all:
 			choice = pywikibot.inputChoice(u"Proceed?",  ['Yes', 'No', 'All'], ['y', 'N', 'a'], 'N')
@@ -47,7 +48,7 @@ def main():
 			all = True
 			choice = 'y'
 		if choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site, labels={'es': label}, descriptions={'es': title}) # New item
+			page = pywikibot.ItemPage.createNew(site, labels={'es': label}, descriptions={'es': title})
 			
 			addClaimToItem(site, page, 'P22', hep)
 			addClaimToItem(site, page, 'P25', ipr)
@@ -60,14 +61,14 @@ def main():
 			authorClaim.setTarget(author)
 			transClaim.addSource(authorClaim)
 
-# Adds a claim to an ItemPage.		
 def addClaimToItem(site, page, id, value):
+	"""Adds a claim to an ItemPage."""
 	claim = pywikibot.Claim(site, id)
 	claim.setTarget(value)
 	page.addClaim(claim)
-	
-# Get inner element text, stripping tags of sub-elements.
+
 def elementText(elem):
+	"""Get inner element text, stripping tags of sub-elements."""
 	text = ''.join(elem.itertext()).strip()
 	text = re.sub('\n', ' ', text)
 	text = re.sub('\s{2,}', ' ', text)
