@@ -51,28 +51,33 @@ def main():
 		pywikibot.output('EN translation: ' + translationEn)
 		
 		# Authors
-		authors = root.findall('./teiHeader/fileDesc/titleStmt/editor')
-		authorString = ''
-		for au in authors:
-			authorString += au.text + ', '
-		authorString = authorString[0:-2]
+		# authors = root.findall('./teiHeader/fileDesc/titleStmt/editor')
+		# authorString = ''
+		# for au in authors:
+		# 	authorString += au.text + ', '
+		# authorString = authorString[0:-2]
+		authorString = 'J. M. Reynolds'
 		pywikibot.output('Authors: ' + authorString)
 		
 		# Publication title
-		pubTitle = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//title')[0])
+		# pubTitle = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//title')[0])
+		pubTitle = 'IRT2009'
 		pywikibot.output('PubTitle: ' + pubTitle)
 		
 		# Publication place
-		pubPlace = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//pubPlace')[0])
+		#pubPlace = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//pubPlace')[0])
+		pubPlace = 'London'
 		pywikibot.output('PubPlace: ' + pubPlace)
 		
 		# Publisher
-		publisher = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//publisher')[0])
+		# publisher = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//publisher')[0])
+		publisher = "King's College London"
 		pywikibot.output('Publisher: ' + publisher)
 		
 		# Date
-		dateText = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//date')[0])
-		pywikibot.output('Date: ' + dateText)
+		# year = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//date')[0])
+		year = '2009'
+		pywikibot.output('Date: ' + year)
 		
 		pywikibot.output('') # newline
 		
@@ -106,10 +111,10 @@ def main():
 			publisherClaim = pywikibot.Claim(site, 'P41')
 			publisherClaim.setTarget(publisher)
 			
-			dateClaim = pywikibot.Claim(site, 'P29')
-			dateClaim.setTarget(dateText)
+			yearClaim = pywikibot.Claim(site, 'P29')
+			yearClaim.setTarget(year)
 			
-			transClaim.addSources([authorClaim, pubClaim, dateClaim, publisherClaim, pubPlaceClaim])
+			transClaim.addSources([authorClaim, pubClaim, yearClaim, publisherClaim, pubPlaceClaim])
 
 def addClaimToItem(site, page, id, value):
 	"""Adds a claim to an ItemPage."""
