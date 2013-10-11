@@ -165,12 +165,22 @@ def normalizeTranslation(elem):
 		if n.text and n.text.startswith('Not usefully'): # Not usefully translat(a|ea)ble
 			n.text = elementText(n)
 		else:
-			n.text = ''
+			addBracesToElement(n, '(', ')')
 	
 	# <supplied>
 	supplied = elem.findall('.//supplied')
 	for s in supplied: # Adds braces
-		s.text = '[' + elementText(s) + ']'
+		addBracesToElement(s, '[', ']')
+
+def addBracesToElement(elem, openBrace='(', closeBrace=')'):
+	if elem.text:
+		elem.text = openBrace + elem.text
+	else:
+		elem.text = openBrace
+	if elem.tail:
+		elem.tail = closeBrace + elem.tail
+	else:
+		elem.tail = closeBrace
 
 if __name__ == "__main__":
     try:
