@@ -6,12 +6,17 @@ import xml.etree.ElementTree as ET
 DATA_DIR = '/Users/pietro/Dropbox/Dati/Hispania epigrafica/'
 
 def main():
+	always = dryrun = False
+	
 	# Handles command-line arguments for pywikibot.
-	args = pywikibot.handleArgs()
+	for arg in pywikibot.handleArgs():
+		if arg == '-dry': # Performs a dry run (does not edit site)
+			dryrun = True
+		if arg == '-always': # Does not ask for confirmation
+			always = True
 	
 	# pywikibot/families/eagle_family.py
 	site = pywikibot.Site('en', 'eagle').data_repository()
-	all = False
 	
 	for fileName in os.listdir(DATA_DIR):
 		tree = ET.parse(DATA_DIR + fileName)
@@ -36,18 +41,21 @@ def main():
 		
 		# Author
 		author = elementText(root.findall('./translator')[0])
-		pywikibot.output('Author: ' + author)
+		if not author:
+			pywikibot.output('WARNING: no author!')
+		else:
+			pywikibot.output('Author: ' + author)
 		
 		pywikibot.output('') # newline
 		
-		if not all:
+		if not always:
 			choice = pywikibot.inputChoice(u"Proceed?",  ['Yes', 'No', 'All'], ['y', 'N', 'a'], 'N')
 		else:
 			choice = 'y'
 		if choice in ['A', 'a']:
-			all = True
+			always = True
 			choice = 'y'
-		if choice in ['Y', 'y']:
+		if not dryrun and choice in ['Y', 'y']:
 			page = pywikibot.ItemPage.createNew(site, labels={'es': label}, descriptions={'es': title})
 			
 			addClaimToItem(site, page, 'P22', hep)

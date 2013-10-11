@@ -5,37 +5,50 @@ import pywikibot, csv
 DATA_FILE = '/Users/pietro/Dropbox/Dati/petrae_translation.csv'
 
 def main():
+	always = dryrun = False
+	
 	# Handles command-line arguments for pywikibot.
-	args = pywikibot.handleArgs()
+	for arg in pywikibot.handleArgs():
+		if arg == '-dry': # Performs a dry run (does not edit site)
+			dryrun = True
+		if arg == '-always': # Does not ask for confirmation
+			always = True
 	
 	# pywikibot/families/eagle_family.py
 	site = pywikibot.Site('en', 'eagle').data_repository()
-	all = False
 	
 	f = open(DATA_FILE, 'r')
 	reader = csv.reader(f, delimiter="\t")
 	for row in reader:
 		id = row[0]
-		translationFr = row[1]
-		image = row[2]
-		
 		pywikibot.output("\n>>>>> " + id + " <<<<<\n")
+		
+		try:
+			translationFr = row[1]
+			image = row[2]
+		except IndexError:
+			pywikibot.output('ERROR: Data not found for id ' + id + '. Ignoring.')
+		
 		if translationFr:
 			pywikibot.output('Translation FR: ' + translationFr)
 		else:
 			pywikibot.output('WARNING: no translation!')
-		pywikibot.output('Image: ' + image)
+		
+		if image:
+			pywikibot.output('Image: ' + image)
+		else:
+			pywikibot.output('WARNING: no image!')
 		
 		pywikibot.output('') # newline
 		
-		if not all:
+		if not always:
 			choice = pywikibot.inputChoice(u"Proceed?",  ['Yes', 'No', 'All'], ['y', 'N', 'a'], 'N')
 		else:
 			choice = 'y'
 		if choice in ['A', 'a']:
-			all = True
+			always = True
 			choice = 'y'
-		if choice in ['Y', 'y']:
+		if not dryrun and choice in ['Y', 'y']:
 			page = pywikibot.ItemPage.createNew(site, labels={'fr': id})
 			
 			addClaimToItem(site, page, 'P33', id) # Petrae ID
