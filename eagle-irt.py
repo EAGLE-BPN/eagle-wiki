@@ -5,21 +5,27 @@ import xml.etree.ElementTree as ET
 
 DATA_DIR = '/Users/pietro/Dropbox/Dati/British School of Rome/'
 
+LICENSE = "Creative Commons licence Attribution UK 2.0 (http://creativecommons.org/licenses/by/2.0/uk/). All reuse or distribution of this work must contain somewhere a link back to the URL http://irt.kcl.ac.uk/"
+
 def main():
+	always = dryrun = False
+	
 	# Handles command-line arguments for pywikibot.
-	args = pywikibot.handleArgs()
+	for arg in pywikibot.handleArgs():
+		if arg == '-dry': # Performs a dry run (does not edit site)
+			dryrun = True
+		if arg == '-always': # Does not ask for confirmation
+			always = True
 	
 	# pywikibot/families/eagle_family.py
 	site = pywikibot.Site('en', 'eagle').data_repository()
-	all = False
 	
 	# EDH ids
 	edhIds = {}
-	f = open('irt-edh.txt', 'r')
-	reader = csv.reader(f, delimiter="\t")
-	for row in reader:
-		edhIds[row[1]] = row[0]
-	f.close()
+	with open('irt-edh.txt', 'r') as f:
+		reader = csv.reader(f, delimiter="\t")
+		for row in reader:
+			edhIds[row[1]] = row[0]
 	
 	for fileName in os.listdir(DATA_DIR):
 		tree = ET.parse(DATA_DIR + fileName)
@@ -35,20 +41,35 @@ def main():
 		title = elementText(root.findall('./teiHeader/fileDesc/titleStmt/title')[0])
 		pywikibot.output('Title: ' + title)
 		
-		# EDH
-		edh = edhIds[bsr]
-		pywikibot.output('EDH: ' + edh)
+		# Tries to guess EDH
+		if bsr in edhIds:
+			edh = edhIds[bsr]
+		elif re.sub('[a-z]$', '', bsr) in edhIds:
+			edh = edhIds[re.sub('[a-z]$', '', bsr)]
+		elif bsr + 'a' in edhIds:
+			edh = edhIds[bsr + 'a']
+		else:
+			edh = ''
+			pywikibot.output('WARNING: no EDH found for ' + bsr + '.')
 		
-		# IPR
-		ipr = elementText(root.findall('./teiHeader/fileDesc/publicationStmt/p')[0])
-		ipr = re.sub(' \(.*?\)', '', ipr)
+		if edh:
+			pywikibot.output('EDH: ' + edh)
+		
+		# IPR (License)
+		# ipr = elementText(root.findall('./teiHeader/fileDesc/publicationStmt/p')[0])
+		# ipr = re.sub(' \(.*?\)', '', ipr)
+		ipr = LICENSE
 		pywikibot.output('IPR: ' + ipr)
 		
 		# Translation EN:
-		transElem = root.findall('./text/body/div[@type=\'translation\']/p')[0]
-		normalizeTranslation(transElem)
-		translationEn = elementText(transElem)
-		pywikibot.output('EN translation: ' + translationEn)
+		try:
+			transElem = root.findall('./text/body/div[@type=\'translation\']/p')[0]
+			normalizeTranslation(transElem)
+			translationEn = elementText(transElem)
+			pywikibot.output('EN translation: ' + translationEn)
+		except IndexError:
+			pywikibot.output('WARNING: no translation found for ' + bsr + '.')
+			continue # TODO: How should I handle this?
 		
 		# Authors
 		# authors = root.findall('./teiHeader/fileDesc/titleStmt/editor')
@@ -81,18 +102,19 @@ def main():
 		
 		pywikibot.output('') # newline
 		
-		if not all:
+		if not always:
 			choice = pywikibot.inputChoice(u"Proceed?",  ['Yes', 'No', 'All'], ['y', 'N', 'a'], 'N')
 		else:
 			choice = 'y'
 		if choice in ['A', 'a']:
-			all = True
+			always = True
 			choice = 'y'
-		if choice in ['Y', 'y']:
+		if not dryrun and choice in ['Y', 'y']:
 			page = pywikibot.ItemPage.createNew(site, labels={'en': bsr}, descriptions={'en': title})
 			
 			addClaimToItem(site, page, 'P40', bsr)
-			addClaimToItem(site, page, 'P24', edh)
+			if edh:
+				addClaimToItem(site, page, 'P24', edh)
 			addClaimToItem(site, page, 'P25', ipr)
 			
 			transClaim = pywikibot.Claim(site, 'P11')
@@ -130,12 +152,25 @@ def elementText(elem):
 	return text
 
 def normalizeTranslation(elem):
-	notes = elem.findall('.//note')
-	for n in notes: # Adds braces
-		n.text = '(' + n.text + ')'
+	"""Processes translation text"""
+	
+	# <gap />
 	gaps = elem.findall('.//gap')
 	for g in gaps:
-		g.text = '---'
+		g.text = '[...]'
+	
+	# <note>
+	notes = elem.findall('.//note')
+	for n in notes: # Adds braces
+		if n.text and n.text.startswith('Not usefully'): # Not usefully translat(a|ea)ble
+			n.text = elementText(n)
+		else:
+			n.text = ''
+	
+	# <supplied>
+	supplied = elem.findall('.//supplied')
+	for s in supplied: # Adds braces
+		s.text = '[' + elementText(s) + ']'
 
 if __name__ == "__main__":
     try:
