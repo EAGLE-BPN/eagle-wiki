@@ -8,7 +8,7 @@ DATA_DIR = '/Users/pietro/Dropbox/Dati/British School of Rome/'
 LICENSE = "Creative Commons licence Attribution UK 2.0 (http://creativecommons.org/licenses/by/2.0/uk/). All reuse or distribution of this work must contain somewhere a link back to the URL http://irt.kcl.ac.uk/"
 
 def main():
-	always = dryrun = False
+	always = dryrun = startsWith = False
 	
 	# Handles command-line arguments for pywikibot.
 	for arg in pywikibot.handleArgs():
@@ -16,6 +16,8 @@ def main():
 			dryrun = True
 		if arg == '-always': # Does not ask for confirmation
 			always = True
+		if arg.startswith('-start:'): # Example: -start:IRT013
+			startsWith = arg.replace('-start:', '')
 	
 	# pywikibot/families/eagle_family.py
 	site = pywikibot.Site('en', 'eagle').data_repository()
@@ -28,6 +30,12 @@ def main():
 			edhIds[row[1]] = row[0]
 	
 	for fileName in os.listdir(DATA_DIR):
+		if startsWith:
+			if fileName != (startsWith + '.xml'):
+				continue # Skips files until start
+			elif fileName == (startsWith + '.xml'):
+				startsWith = False # Resets
+		
 		tree = ET.parse(DATA_DIR + fileName)
 		root = tree.getroot()
 		
