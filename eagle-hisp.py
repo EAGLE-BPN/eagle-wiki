@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 DATA_DIR = '/Users/pietro/Dropbox/Dati/Hispania epigrafica/'
 
 def main():
-	always = dryrun = False
+	always = dryrun = startsWith = False
 	
 	# Handles command-line arguments for pywikibot.
 	for arg in pywikibot.handleArgs():
@@ -14,11 +14,20 @@ def main():
 			dryrun = True
 		if arg == '-always': # Does not ask for confirmation
 			always = True
+		if arg.startswith('-start:'): # Example: -start:100
+			startsWith = arg.replace('-start:', '')
 	
-	# pywikibot/families/eagle_family.py
-	site = pywikibot.Site('en', 'eagle').data_repository()
+	if not dryrun:
+		# pywikibot/families/eagle_family.py
+		site = pywikibot.Site('en', 'eagle').data_repository()
 	
 	for fileName in os.listdir(DATA_DIR):
+		if startsWith:
+			if fileName != (startsWith + '.xml'):
+				continue # Skips files until start
+			elif fileName == (startsWith + '.xml'):
+				startsWith = False # Resets
+		
 		tree = ET.parse(DATA_DIR + fileName)
 		root = tree.getroot()
 		
@@ -65,9 +74,10 @@ def main():
 			transClaim.setTarget(esTranslation)
 			page.addClaim(transClaim)
 			
-			authorClaim = pywikibot.Claim(site, 'P21')
-			authorClaim.setTarget(author)
-			transClaim.addSource(authorClaim)
+			if author:
+				authorClaim = pywikibot.Claim(site, 'P21')
+				authorClaim.setTarget(author)
+				transClaim.addSource(authorClaim)
 
 def addClaimToItem(site, page, id, value):
 	"""Adds a claim to an ItemPage."""

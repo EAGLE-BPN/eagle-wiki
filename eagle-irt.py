@@ -19,8 +19,9 @@ def main():
 		if arg.startswith('-start:'): # Example: -start:IRT013
 			startsWith = arg.replace('-start:', '')
 	
-	# pywikibot/families/eagle_family.py
-	site = pywikibot.Site('en', 'eagle').data_repository()
+	if not dryrun:
+		# pywikibot/families/eagle_family.py
+		site = pywikibot.Site('en', 'eagle').data_repository()
 	
 	# EDH ids
 	edhIds = {}
