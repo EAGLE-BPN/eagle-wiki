@@ -3,7 +3,7 @@
 import pywikibot, os, re
 import xml.etree.ElementTree as ET
 
-DATA_DIR = '/Users/pietro/Dropbox/Dati/Hispania epigrafica/'
+DATA_DIR = '/Users/pietro/Dropbox/Dati/translations/'
 
 def main():
 	always = dryrun = startsWith = False
@@ -21,7 +21,8 @@ def main():
 		# pywikibot/families/eagle_family.py
 		site = pywikibot.Site('en', 'eagle').data_repository()
 	
-	for fileName in os.listdir(DATA_DIR):
+	# Numeric sorting for file names ("32.xml" must follow "4.xml"...)
+	for fileName in sorted(os.listdir(DATA_DIR), key=idFromFilename):
 		if startsWith:
 			if fileName != (startsWith + '.xml'):
 				continue # Skips files until start
@@ -41,7 +42,7 @@ def main():
 		title = elementText(root.findall('./title')[0])
 		
 		# IPR
-		ipr = elementText(root.findall('./ipr')[0])[1:-1] # Strip quotes
+		ipr = elementText(root.findall('./license')[0])[1:-1] # Strip quotes
 		pywikibot.output('IPR: ' + ipr)
 		
 		# ES Translation
@@ -65,7 +66,7 @@ def main():
 			always = True
 			choice = 'y'
 		if not dryrun and choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site, labels={'es': label}, descriptions={'es': title})
+			page = pywikibot.ItemPage.createNew(site, labels={'es': label, 'en': label}, descriptions={'es': title})
 			
 			addClaimToItem(site, page, 'P22', hep)
 			addClaimToItem(site, page, 'P25', ipr)
@@ -78,6 +79,12 @@ def main():
 				authorClaim = pywikibot.Claim(site, 'P21')
 				authorClaim.setTarget(author)
 				transClaim.addSource(authorClaim)
+
+def idFromFilename(filename):
+	"""Extracts the number from filename:
+		"3.xml" --> 3
+	"""
+	return int(filename.split('.')[0])
 
 def addClaimToItem(site, page, id, value):
 	"""Adds a claim to an ItemPage."""
