@@ -3,7 +3,7 @@
 import pywikibot, os, re
 import xml.etree.ElementTree as ET
 
-DATA_DIR = '/Users/pietro/Dropbox/Dati/translations/'
+DATA_DIR = '/Users/pietro/Dropbox/Dati/Hispania epigrafica/'
 
 def main():
 	always = dryrun = startsWith = False
