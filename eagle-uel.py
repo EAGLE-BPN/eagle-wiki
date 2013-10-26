@@ -70,14 +70,15 @@ def main():
 			
 			addClaimToItem(site, page, 'P34', id)
 			
-			transClaim = pywikibot.Claim(site, 'P12')
-			transClaim.setTarget(translation)
-			page.addClaim(transClaim)
+			if translation is not None:
+				transClaim = pywikibot.Claim(site, 'P12')
+				transClaim.setTarget(translation)
+				page.addClaim(transClaim)
 			
-			pubClaim = pywikibot.Claim(site, 'P26')
-			pubClaim.setTarget(pubTitle)
+				pubClaim = pywikibot.Claim(site, 'P26')
+				pubClaim.setTarget(pubTitle)
 			
-			transClaim.addSources([pubClaim])
+				transClaim.addSources([pubClaim])
 
 def addClaimToItem(site, page, id, value):
 	"""Adds a claim to an ItemPage."""
