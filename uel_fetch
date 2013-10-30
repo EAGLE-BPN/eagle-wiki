@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# This script fetches all the Ubi Erat Lupa monuments.
+# See also:
+# http://www.ubi-erat-lupa.org/eagle/
+# http://www.ubi-erat-lupa.org/eagle/monuments.xml.php
+
+for i in $(seq 0 1000 22000);
+do echo "http://www.ubi-erat-lupa.org/eagle/monuments.xml.php?limit=1000&offset=$i";
+done | wget -i - -O UEL.xml 

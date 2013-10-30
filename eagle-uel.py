@@ -41,6 +41,10 @@ def main():
 		
 		# Title
 		title = m.find('title').text
+		if not title:
+			pywikibot.output('WARNING: no title found for ID: ' + id + '. Skipping.')
+			continue
+		
 		pywikibot.output('Title: ' + title)
 		
 		# Translation DE:
