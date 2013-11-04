@@ -8,6 +8,7 @@ import pywikibot, re
 import xml.etree.ElementTree as ET
 
 FILE_PATH = '/Users/pietro/Dropbox/Dati/UbiEratLupa.xml'
+IPR = 'Ubi Erat Lupa. http://www.ubi-erat-lupa.org/about.php'
 
 def main():
 	always = dryrun = startsWith = False
@@ -53,12 +54,16 @@ def main():
 			translation = elementText(transElem)
 			pywikibot.output('DE translation: ' + translation)
 		else:
-			translation = None
-			pywikibot.output('WARNING: no translation found for ID: ' + id + '.')
+			pywikibot.output('WARNING: no translation found for ID: ' + id + '. Skipping.')
+			continue
 		
 		# Publication title
 		pubTitle = 'Ubi Erat Lupa'
 		pywikibot.output('Publication title: ' + pubTitle)
+		
+		# IPR
+		ipr = IPR
+		pywikibot.output('IPR: ' + ipr)
 		
 		pywikibot.output('') # newline
 		
@@ -73,16 +78,16 @@ def main():
 			page = pywikibot.ItemPage.createNew(site, labels={'en': id, 'de': id}, descriptions={'de': title})
 			
 			addClaimToItem(site, page, 'P34', id)
+			addClaimToItem(site, page, 'P25', ipr)
 			
-			if translation is not None:
-				transClaim = pywikibot.Claim(site, 'P12')
-				transClaim.setTarget(translation)
-				page.addClaim(transClaim)
-			
-				pubClaim = pywikibot.Claim(site, 'P26')
-				pubClaim.setTarget(pubTitle)
-			
-				transClaim.addSources([pubClaim])
+			transClaim = pywikibot.Claim(site, 'P12')
+			transClaim.setTarget(translation)
+			page.addClaim(transClaim)
+		
+			pubClaim = pywikibot.Claim(site, 'P26')
+			pubClaim.setTarget(pubTitle)
+		
+			transClaim.addSources([pubClaim])
 
 def addClaimToItem(site, page, id, value):
 	"""Adds a claim to an ItemPage."""
