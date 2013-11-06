@@ -8,7 +8,7 @@ import pywikibot, re
 import xml.etree.ElementTree as ET
 
 FILE_PATH = '/Users/pietro/Dropbox/Dati/UbiEratLupa.xml'
-IPR = 'Ubi Erat Lupa. http://www.ubi-erat-lupa.org/about.php'
+IPR = 'CC0'
 
 def main():
 	always = dryrun = startsWith = False

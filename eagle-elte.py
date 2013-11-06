@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import pywikibot, csv, re
+import pywikibot, csv, re, urllib2
+import xml.etree.ElementTree as ET
 
 DATA_FILE = '/Users/pietro/Dropbox/Dati/elte.csv'
 
@@ -20,8 +21,10 @@ def main():
 	f = open(DATA_FILE, 'r')
 	reader = csv.reader(f, delimiter=";")
 	for row in reader:
-		#id = row[0]
-		#pywikibot.output("\n>>>>> " + id + " <<<<<\n")
+		BorhyID = normalizeText(row[8])
+		
+		pywikibot.output("\n>>>>> " + BorhyID + " <<<<<\n")
+		pywikibot.output('BorhyID: ' + BorhyID)
 		
 		translationHu = normalizeText(row[1])
 		pywikibot.output('Translation HU: ' + translationHu)
@@ -44,11 +47,16 @@ def main():
 		publisher = normalizeText(row[7])
 		pywikibot.output('Publisher: ' + publisher)
 		
-		BorhyID = normalizeText(row[8])
-		pywikibot.output('BorhyID: ' + BorhyID)
-		
 		edh = normalizeText(row[9])
-		pywikibot.output('EDH: ' + edh)
+		if edh:
+			pywikibot.output('EDH: ' + edh)
+		else:
+			pywikibot.output('WARNING: no EDH!')
+		
+		data = {}
+		if edh:
+			data = getDataFromEDH(edh)
+			pywikibot.output('Description: ' + data['description'])
 		
 		pywikibot.output('') # newline
 		
@@ -60,7 +68,10 @@ def main():
 			always = True
 			choice = 'y'
 		if not dryrun and choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site, labels={'hu': BorhyID})
+			descriptions = {}
+			if 'description' in data:
+				descriptions['de'] = data['description']
+			page = pywikibot.ItemPage.createNew(site, labels={'en': BorhyID}, descriptions=descriptions)
 		
 			# HU translation
 			transClaim = pywikibot.Claim(site, 'P19')
@@ -68,28 +79,35 @@ def main():
 			page.addClaim(transClaim)
 		
 			# Sources of translation
-		
+			sources = []
+			
 			authorClaim = pywikibot.Claim(site, 'P21')
 			authorClaim.setTarget(author)
+			sources.append(authorClaim)
 		
 			pubTitleClaim = pywikibot.Claim(site, 'P32')
 			pubTitleClaim.setTarget(pubTitle)
+			sources.append(pubTitleClaim)
 		
 			yearClaim = pywikibot.Claim(site, 'P29')
 			yearClaim.setTarget(year)
+			sources.append(yearClaim)
 		
-			placeClaim = pywikibot.Claim(site, 'P28')
+			placeClaim = pywikibot.Claim(site, 'P26')
 			placeClaim.setTarget(place)
+			sources.append(placeClaim)
 		
 			publisherClaim = pywikibot.Claim(site, 'P41')
 			publisherClaim.setTarget(publisher)
+			sources.append(publisherClaim)
 			
-			transClaim.addSources([authorClaim, pubTitleClaim, yearClaim, placeClaim, publisherClaim])
+			transClaim.addSources(sources)
 			
 			# Other properties
 			
 			addClaimToItem(site, page, 'P25', ipr)
-			addClaimToItem(site, page, 'P24', edh)
+			if edh:
+				addClaimToItem(site, page, 'P24', edh)
 			
 	f.close()
 	
@@ -103,7 +121,22 @@ def normalizeText(text):
 	text = re.sub('\n', ' ', text.strip())
 	text = re.sub('\s{2,}', ' ', text)
 	return text
+
+def getDataFromEDH(edh):
+	"""Gets data from an online XML source"""
 	
+	namespacePrefix = '{http://www.tei-c.org/ns/1.0}'
+	url = "http://edh-www.adw.uni-heidelberg.de/edh/inschrift/" + edh + ".xml"
+	
+	response = urllib2.urlopen(url)
+	xmlCode = response.read()
+	root = ET.XML(xmlCode)
+	
+	data = {}
+	data['description'] = root.find('.//' + namespacePrefix + 'title').text
+	
+	return data
+		
 if __name__ == "__main__":
     try:
         main()
