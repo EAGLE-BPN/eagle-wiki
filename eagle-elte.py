@@ -24,7 +24,7 @@ def main():
 		BorhyID = normalizeText(row[8])
 		
 		pywikibot.output("\n>>>>> " + BorhyID + " <<<<<\n")
-		pywikibot.output('BorhyID: ' + BorhyID)
+		pywikibot.output('ELTE identifier: ' + BorhyID)
 		
 		translationHu = normalizeText(row[1])
 		pywikibot.output('Translation HU: ' + translationHu)
@@ -85,7 +85,7 @@ def main():
 			authorClaim.setTarget(author)
 			sources.append(authorClaim)
 		
-			pubTitleClaim = pywikibot.Claim(site, 'P32')
+			pubTitleClaim = pywikibot.Claim(site, 'P26')
 			pubTitleClaim.setTarget(pubTitle)
 			sources.append(pubTitleClaim)
 		
@@ -93,7 +93,7 @@ def main():
 			yearClaim.setTarget(year)
 			sources.append(yearClaim)
 		
-			placeClaim = pywikibot.Claim(site, 'P26')
+			placeClaim = pywikibot.Claim(site, 'P28')
 			placeClaim.setTarget(place)
 			sources.append(placeClaim)
 		
@@ -106,6 +106,7 @@ def main():
 			# Other properties
 			
 			addClaimToItem(site, page, 'P25', ipr)
+			addClaimToItem(site, page, 'P48', BorhyID) # ELTE identifier
 			if edh:
 				addClaimToItem(site, page, 'P24', edh)
 			
@@ -118,6 +119,7 @@ def addClaimToItem(site, page, id, value):
 	page.addClaim(claim)
 
 def normalizeText(text):
+	"""Removes double spaces, newlines and spaces at the beginning or at the end of the string"""
 	text = re.sub('\n', ' ', text.strip())
 	text = re.sub('\s{2,}', ' ', text)
 	return text
@@ -133,7 +135,7 @@ def getDataFromEDH(edh):
 	root = ET.XML(xmlCode)
 	
 	data = {}
-	data['description'] = root.find('.//' + namespacePrefix + 'title').text
+	data['description'] = normalizeText(root.find('.//' + namespacePrefix + 'title').text)
 	
 	return data
 		
