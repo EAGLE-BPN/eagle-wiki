@@ -52,10 +52,20 @@ def main():
 		transElem = m.find('./inscription/translation')
 		if transElem is not None:
 			translation = elementText(transElem)
-			pywikibot.output('DE translation: ' + translation)
 		else:
 			pywikibot.output('WARNING: no translation found for ID: ' + id + '. Skipping.')
 			continue
+		
+		# (Heuristic) Splits author info from translation text
+		authorReg = re.compile(ur' (?:Translated by|Übersetzung): ?(.*)$', re.IGNORECASE | re.DOTALL)
+		authMatch = authorReg.search(translation)
+		if authMatch:
+			author = authMatch.group(1)
+			pywikibot.output('Author: ' + author)
+			# Removes author from translation
+			translation = authorReg.sub('', translation)
+		
+		pywikibot.output('DE translation: ' + translation)	
 		
 		# Publication title
 		pubTitle = 'Ubi Erat Lupa'
@@ -83,11 +93,19 @@ def main():
 			transClaim = pywikibot.Claim(site, 'P12')
 			transClaim.setTarget(translation)
 			page.addClaim(transClaim)
-		
+			
+			sources = []
+			
 			pubClaim = pywikibot.Claim(site, 'P26')
 			pubClaim.setTarget(pubTitle)
+			sources.append(pubClaim)
+			
+			if author:
+				authorClaim = pywikibot.Claim(site, 'P21')
+				authorClaim.setTarget(author)
+				sources.append(authorClaim)
 		
-			transClaim.addSources([pubClaim])
+			transClaim.addSources(sources)
 
 def addClaimToItem(site, page, id, value):
 	"""Adds a claim to an ItemPage."""
