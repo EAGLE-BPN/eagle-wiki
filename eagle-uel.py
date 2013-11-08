@@ -116,7 +116,7 @@ def addClaimToItem(site, page, id, value):
 def elementText(elem):
 	"""Gets inner element text, stripping tags of sub-elements."""
 	text = ''.join(elem.itertext()).strip()
-	text = re.sub('\n', ' ', text)
+	text = re.sub('(\n|\t)', ' ', text)
 	text = re.sub('\s{2,}', ' ', text)
 	return text
 
