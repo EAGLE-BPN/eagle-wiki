@@ -57,6 +57,7 @@ def main():
 			continue
 		
 		# (Heuristic) Splits author info from translation text
+		author = None
 		authorReg = re.compile(ur' (?:Translated by|Übersetzung): ?(.*)$', re.IGNORECASE | re.DOTALL)
 		authMatch = authorReg.search(translation)
 		if authMatch:
@@ -100,7 +101,7 @@ def main():
 			pubClaim.setTarget(pubTitle)
 			sources.append(pubClaim)
 			
-			if author:
+			if author is not None:
 				authorClaim = pywikibot.Claim(site, 'P21')
 				authorClaim.setTarget(author)
 				sources.append(authorClaim)
