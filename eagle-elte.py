@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 DATA_FILE = '/Users/pietro/Dropbox/Dati/elte.csv'
 
 def main():
-	always = dryrun = False
+	always = dryrun = startsWith = False
 	
 	# Handles command-line arguments for pywikibot.
 	for arg in pywikibot.handleArgs():
@@ -14,6 +14,8 @@ def main():
 			dryrun = True
 		if arg == '-always': # Does not ask for confirmation
 			always = True
+		if arg.startswith('-start:'): # Example: -start:255
+			startsWith = arg.replace('-start:', '')
 	
 	# pywikibot/families/eagle_family.py
 	site = pywikibot.Site('en', 'eagle').data_repository()
@@ -22,11 +24,19 @@ def main():
 	reader = csv.reader(f, delimiter=";")
 	for row in reader:
 		BorhyID = normalizeText(row[8])
+		if startsWith:
+			if BorhyID != startsWith:
+				continue # Skips files until start
+			elif BorhyID == startsWith:
+				startsWith = False # Resets
 		
 		pywikibot.output("\n>>>>> " + BorhyID + " <<<<<\n")
 		pywikibot.output('ELTE identifier: ' + BorhyID)
 		
 		translationHu = normalizeText(row[1])
+		if translationHu == '':
+			pywikibot.output('WARNING: no translation. Skipping.')
+			continue
 		pywikibot.output('Translation HU: ' + translationHu)
 		
 		ipr = normalizeText(row[2])

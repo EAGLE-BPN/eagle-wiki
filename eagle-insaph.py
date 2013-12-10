@@ -5,7 +5,8 @@ import xml.etree.ElementTree as ET
 
 DATA_DIR = '/Users/pietro/Dropbox/Dati/insaph/'
 
-LICENSE = "Creative Commons licence Attribution UK 2.0 (http://creativecommons.org/licenses/by/2.0/uk/)."
+LICENSE = "Creative Commons licence Attribution 2.5 (http://creativecommons.org/licenses/by/2.5/).\
+ All reuse or distribution of this work must contain somewhere a link back to the URL http://insaph.kcl.ac.uk/"
 
 def main():
 	always = dryrun = startsWith = False
@@ -33,11 +34,11 @@ def main():
 		tree = ET.parse(DATA_DIR + fileName)
 		root = tree.getroot()
 		
-		# BSR
-		bsr = root.get('id')
+		# ID
+		insAphID = root.get('id')
 		
 		# ID
-		pywikibot.output("\n>>>>> " + bsr + " <<<<<\n")
+		pywikibot.output("\n>>>>> " + insAphID + " <<<<<\n")
 		
 		# Title
 		title = elementText(root.find('./teiHeader/fileDesc/titleStmt/title'))
@@ -56,7 +57,7 @@ def main():
 			translationEn = elementText(transElem)
 			pywikibot.output('EN translation: ' + translationEn)
 		except IndexError:
-			pywikibot.output('WARNING: no translation found for ' + bsr + '.')
+			pywikibot.output('WARNING: no translation found for ' + insAphID + '.')
 			continue # TODO: How should I handle this?
 		
 		# Authors
@@ -95,9 +96,9 @@ def main():
 			always = True
 			choice = 'y'
 		if not dryrun and choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site, labels={'en': bsr}, descriptions={'en': title})
+			page = pywikibot.ItemPage.createNew(site, labels={'en': insAphID}, descriptions={'en': title})
 			
-			addClaimToItem(site, page, 'P40', bsr)
+			addClaimToItem(site, page, 'P50', insAphID)
 			addClaimToItem(site, page, 'P25', ipr)
 			
 			transClaim = pywikibot.Claim(site, 'P11')
