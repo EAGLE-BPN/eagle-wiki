@@ -3,10 +3,19 @@
 import pywikibot, os, re, csv
 import xml.etree.ElementTree as ET
 
-DATA_DIR = '/Users/pietro/Dropbox/Dati/insaph/'
+DATA_DIR = '/Users/pietro/Dropbox/Dati/insAph/data/'
 
 LICENSE = "Creative Commons licence Attribution 2.5 (http://creativecommons.org/licenses/by/2.5/).\
  All reuse or distribution of this work must contain somewhere a link back to the URL http://insaph.kcl.ac.uk/"
+
+knownPublications = {
+	'ala2004': {
+		'pubTitle': 'Originally published in Aphrodisias in Late Antiquity: The Late Roman and Byzantine Inscriptions (2004)', # title
+		'author': 'Charlotte Roueché', # author
+		'pubPlace': 'London', # place
+		'year': '2004',
+	}
+}
 
 def main():
 	always = dryrun = startsWith = False
@@ -25,6 +34,8 @@ def main():
 		site = pywikibot.Site('en', 'eagle').data_repository()
 	
 	for fileName in os.listdir(DATA_DIR):
+		data = {} # Resets element info
+		
 		if startsWith:
 			if fileName != (startsWith + '.xml'):
 				continue # Skips files until start
@@ -35,56 +46,57 @@ def main():
 		root = tree.getroot()
 		
 		# ID
-		insAphID = root.get('id')
+		data['insAphID'] = root.get('id')
 		
 		# ID
-		pywikibot.output("\n>>>>> " + insAphID + " <<<<<\n")
+		pywikibot.output("\n>>>>> " + data['insAphID'] + " <<<<<\n")
 		
 		# Title
-		title = elementText(root.find('./teiHeader/fileDesc/titleStmt/title'))
-		pywikibot.output('Title: ' + title)
+		data['title'] = elementText(root.find('./teiHeader/fileDesc/titleStmt/title'))
+		pywikibot.output('Title: ' + data['title'])
 		
 		# IPR (License)
-		# ipr = elementText(root.findall('./teiHeader/fileDesc/publicationStmt/p')[0])
-		# ipr = re.sub(' \(.*?\)', '', ipr)
-		ipr = LICENSE
-		pywikibot.output('IPR: ' + ipr)
+		data['ipr'] = LICENSE
+		pywikibot.output('IPR: ' + data['ipr'])
 		
 		# Translation EN:
-		try:
-			transElem = root.find('./text/body/div[@type=\'translation\']')
-			normalizeTranslation(transElem)
-			translationEn = elementText(transElem)
-			pywikibot.output('EN translation: ' + translationEn)
-		except IndexError:
-			pywikibot.output('WARNING: no translation found for ' + insAphID + '.')
+		transElem = root.find("./text/body/div[@type='translation']")
+		if transElem is None:
+			pywikibot.output('WARNING: no translation found for ' + data['insAphID'] + '.')
 			continue # TODO: How should I handle this?
+		
+		normalizeTranslation(transElem)
+		data['translationEn'] = elementText(transElem)
+		pywikibot.output('EN translation: ' + data['translationEn'])
 		
 		# Authors
 		authors = root.findall('./teiHeader/fileDesc/publicationStmt//bibl/editor')
-		authorString = ''
+		data['author'] = ''
 		for au in authors:
-			authorString += elementText(au) + ', '
-		authorString = authorString[0:-2] # removes last comma
-		pywikibot.output('Authors: ' + authorString)
+			data['author'] += elementText(au) + ', '
+		data['author'] = data['author'][0:-2] # removes last comma
 		
 		# Date
-		year = elementText(root.find('./teiHeader/fileDesc/publicationStmt//bibl/date'))
-		pywikibot.output('Date: ' + year)
+		dateElem = root.find('./teiHeader/fileDesc/sourceDesc//bibl/date')
+		if dateElem is not None:
+			data['year'] = elementText(dateElem)
 		
 		# Publication title
-		pubTitle = elementText(root.find('./teiHeader/fileDesc/sourceDesc/p'))
-		pywikibot.output('PubTitle: ' + pubTitle)
+		data['pubTitle'] = elementText(root.find('./teiHeader/fileDesc/sourceDesc/p'))
 		
-		# Publication place
-		#pubPlace = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//pubPlace')[0])
-		#pubPlace = 'London'
-		#pywikibot.output('PubPlace: ' + pubPlace)
-		
-		# Publisher
-		# publisher = elementText(root.findall('./teiHeader/fileDesc/sourceDesc//publisher')[0])
-		# publisher = "King's College London"
-		# pywikibot.output('Publisher: ' + publisher)
+		# Known publication?
+		bibl = root.find('./teiHeader/fileDesc/sourceDesc//bibl')
+		if bibl is not None:
+			data['publicationID'] = bibl.get('n')
+			if data['publicationID'] in knownPublications.keys():
+				data.update(knownPublications[data['publicationID']])
+			
+		pywikibot.output('Authors: ' + data['author'])
+		if 'year' in data:
+			pywikibot.output('Date: ' + data['year'])
+		pywikibot.output('Publication title: ' + data['pubTitle'])
+		if 'pubPlace' in data:
+			pywikibot.output('Publication place: ' + data['pubPlace'])
 		
 		pywikibot.output('') # newline
 		
@@ -96,34 +108,34 @@ def main():
 			always = True
 			choice = 'y'
 		if not dryrun and choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site, labels={'en': insAphID}, descriptions={'en': title})
+			page = pywikibot.ItemPage.createNew(site, labels={'en': data['insAphID']}, descriptions={'en': data['title']})
 			
-			addClaimToItem(site, page, 'P50', insAphID)
-			addClaimToItem(site, page, 'P25', ipr)
+			addClaimToItem(site, page, 'P50', data['insAphID'])
+			addClaimToItem(site, page, 'P25', data['ipr'])
 			
 			transClaim = pywikibot.Claim(site, 'P11')
-			transClaim.setTarget(translationEn)
+			transClaim.setTarget(data['translationEn'])
 			page.addClaim(transClaim)
 			
 			sources = []
 			
 			authorClaim = pywikibot.Claim(site, 'P21')
- 			authorClaim.setTarget(authorString)
- 			sources.append(authorClaim)
+			authorClaim.setTarget(data['author'])
+			sources.append(authorClaim)
 			
 			pubClaim = pywikibot.Claim(site, 'P26')
-			pubClaim.setTarget(pubTitle)
+			pubClaim.setTarget(data['pubTitle'])
 			sources.append(pubClaim)
-# 			
-# 			pubPlaceClaim = pywikibot.Claim(site, 'P28')
-# 			pubPlaceClaim.setTarget(pubPlace)
-# 			
-# 			publisherClaim = pywikibot.Claim(site, 'P41')
-# 			publisherClaim.setTarget(publisher)
-# 			
- 			yearClaim = pywikibot.Claim(site, 'P29')
- 			yearClaim.setTarget(year)
- 			sources.append(yearClaim)
+			
+			if 'year' in data:		
+				yearClaim = pywikibot.Claim(site, 'P29')
+				yearClaim.setTarget(data['year'])
+				sources.append(yearClaim)
+			
+			if 'pubPlace' in data:
+				pubPlaceClaim = pywikibot.Claim(site, 'P28')
+				pubPlaceClaim.setTarget(data['pubPlace'])
+				sources.append(pubPlaceClaim)
 			
 			transClaim.addSources(sources)
 
