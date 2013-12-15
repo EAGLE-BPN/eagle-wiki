@@ -69,6 +69,9 @@ def main():
 		
 		normalizeTranslation(transElem)
 		data['translationEn'] = elementText(transElem)
+		if data['translationEn'] == '':
+			pywikibot.output('WARNING: no translation. Skipping.')
+			continue
 		pywikibot.output('EN translation: ' + data['translationEn'])
 		
 		# Authors
