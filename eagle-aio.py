@@ -9,6 +9,7 @@ CSVFILE = '/Users/pietro/Downloads/AIO/AIO.csv'
 LICENSE = 'Creative Commons Attribution-ShareAlike 3.0 http://creativecommons.org/licenses/by-sa/3.0/'
 AUTHOR = 'Stephen Lambert'
 PUB_TITLE = 'Attic Inscriptions Online'
+BASE_URL = 'http://www.atticinscriptions.com/inscription/'
 
 def main():
 	always = dryrun = startsWith = False
@@ -50,13 +51,13 @@ def main():
 		data['label'] = elementText(soup.find('aside').find_all('p')[1])
 		
 		pywikibot.output("\n>>>>> " + data['label'] + " <<<<<\n")
-		pywikibot.output('Processing file ' + DATA_DIR + fileName + '.')
+		pywikibot.output('Processing file ' + DATA_DIR + fileName)
 		pywikibot.output('Label: ' + data['label'])
 		pywikibot.output('Description: ' + data['description'])
 		
 		# URL
-		data['url'] = urlDict[fileName]
-		pywikibot.output('URL: ' + data['url'])
+		data['aioid'] = urlDict[fileName]
+		pywikibot.output('AIO ID: ' + data['aioid'])
 		
 		# IPR (License)
 		data['ipr'] = LICENSE
@@ -94,13 +95,13 @@ def main():
 				always = True
 				choice = 'y'
 			elif choice in ['B', 'b']:
-				webbrowser.open(data['url'])
+				webbrowser.open(BASE_URL + data['aioid'])
 				choice = None # Re-ask
 		
 		if not dryrun and choice in ['Y', 'y']:
 			page = pywikibot.ItemPage.createNew(site, labels={'en': data['label']}, descriptions={'en': data['description']})
 			
-			addClaimToItem(site, page, 'P51', data['url'])
+			addClaimToItem(site, page, 'P51', data['aioid'])
 			addClaimToItem(site, page, 'P25', data['ipr'])
 			
 			transClaim = pywikibot.Claim(site, 'P11')
