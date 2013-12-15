@@ -47,7 +47,7 @@ def main():
 		
 		# Label and description
 		data['description'] = elementText(soup.find('h3'))
-		data['label'] = elementText(soup.find('h4'))
+		data['label'] = elementText(soup.find('aside').find_all('p')[1])
 		
 		pywikibot.output("\n>>>>> " + data['label'] + " <<<<<\n")
 		pywikibot.output('Processing file ' + DATA_DIR + fileName + '.')

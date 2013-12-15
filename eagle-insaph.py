@@ -8,7 +8,7 @@ DATA_DIR = '/Users/pietro/Dropbox/Dati/insAph/data/'
 LICENSE = "Creative Commons licence Attribution 2.5 (http://creativecommons.org/licenses/by/2.5/).\
  All reuse or distribution of this work must contain somewhere a link back to the URL http://insaph.kcl.ac.uk/"
 
-UNPUBLISHED = "Unpublished inscription. This version born digital."
+unpublished_regex = re.compile("Unpublished inscription\. This version born digital\.?")
 
 knownPublications = {
 	'ala2004': {
@@ -86,7 +86,7 @@ def main():
 		# Publication title
 		data['pubTitle'] = elementText(root.find('./teiHeader/fileDesc/sourceDesc/p'))
 		
-		if data['pubTitle'] == UNPUBLISHED: # Born digital
+		if unpublished_regex.match(data['pubTitle']): # Born digital
 			data['pubTitle'] = 'Inscriptions of Aphrodisias'
 			data['year'] = '2007'
 			
