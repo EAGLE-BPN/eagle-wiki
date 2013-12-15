@@ -129,8 +129,30 @@ def addClaimToItem(site, page, id, value):
 	claim.setTarget(value)
 	page.addClaim(claim)
 
+def replaceSuperscript(text):
+	superRep = [
+		(u'1', u'¹'),
+		(u'2', u'²'),
+		(u'3', u'³'),
+		(u'4', u'⁴'),
+		(u'5', u'⁵'),
+		(u'6', u'⁶'),
+		(u'7', u'⁷'),
+		(u'8', u'⁸'),
+		(u'9', u'⁹'),
+		(u'0', u'⁰'),
+	]
+	for i in superRep:
+		text = text.replace(i[0], u'%sup%' + i[1])
+	return text
+
 def elementText(elem):
-	return elem.get_text(' ', strip=True)
+	sups = elem.find_all('sup')
+	for i in sups:
+		i.replaceWith(replaceSuperscript(i.string))
+	text = elem.get_text(' ', strip=True)
+	text = text.replace(u' %sup%', '')
+	return text
 
 if __name__ == "__main__":
     try:

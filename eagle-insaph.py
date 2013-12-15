@@ -130,9 +130,10 @@ def main():
 			authorClaim.setTarget(data['author'])
 			sources.append(authorClaim)
 			
-			pubClaim = pywikibot.Claim(site, 'P26')
-			pubClaim.setTarget(data['pubTitle'])
-			sources.append(pubClaim)
+			if data['pubTitle'] != '':
+				pubClaim = pywikibot.Claim(site, 'P26')
+				pubClaim.setTarget(data['pubTitle'])
+				sources.append(pubClaim)
 			
 			if 'year' in data:		
 				yearClaim = pywikibot.Claim(site, 'P29')
