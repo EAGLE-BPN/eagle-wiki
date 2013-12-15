@@ -8,6 +8,8 @@ DATA_DIR = '/Users/pietro/Dropbox/Dati/insAph/data/'
 LICENSE = "Creative Commons licence Attribution 2.5 (http://creativecommons.org/licenses/by/2.5/).\
  All reuse or distribution of this work must contain somewhere a link back to the URL http://insaph.kcl.ac.uk/"
 
+UNPUBLISHED = "Unpublished inscription. This version born digital."
+
 knownPublications = {
 	'ala2004': {
 		'pubTitle': 'Originally published in Aphrodisias in Late Antiquity: The Late Roman and Byzantine Inscriptions (2004)', # title
@@ -83,6 +85,11 @@ def main():
 		
 		# Publication title
 		data['pubTitle'] = elementText(root.find('./teiHeader/fileDesc/sourceDesc/p'))
+		
+		if data['pubTitle'] == UNPUBLISHED: # Born digital
+			data['pubTitle'] = 'Inscriptions of Aphrodisias'
+			data['year'] = '2007'
+			
 		
 		# Known publication?
 		bibl = root.find('./teiHeader/fileDesc/sourceDesc//bibl')
