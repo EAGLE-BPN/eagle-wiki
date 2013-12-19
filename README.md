@@ -2,7 +2,7 @@ Wikimedia EAGLE import project
 =====
 
 The Python scripts import the EAGLE data into the [EAGLE Wikibase wiki](http://www.eagle-network.eu/wiki/index.php/).
-Import scripts have benn developed for the following datasets:
+Import scripts have been developed for the following datasets:
 * IRT
 * Hispania Epigrafica
 * Ubi Erat Lupa
