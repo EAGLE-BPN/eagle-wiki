@@ -55,9 +55,11 @@ def main():
 		pywikibot.output('Label: ' + data['label'])
 		pywikibot.output('Description: ' + data['description'])
 		
-		# URL
-		data['aioid'] = urlDict[fileName]
+		# ID and URL
+		data['aioid'] = elementText(soup.find('h4'))
+		data['url'] = BASE_URL + urlDict[fileName]
 		pywikibot.output('AIO ID: ' + data['aioid'])
+		pywikibot.output('URL: ' + data['url'])
 		
 		# IPR (License)
 		data['ipr'] = LICENSE
@@ -95,13 +97,20 @@ def main():
 				always = True
 				choice = 'y'
 			elif choice in ['B', 'b']:
-				webbrowser.open(BASE_URL + data['aioid'])
+				webbrowser.open(data['url'])
 				choice = None # Re-ask
 		
 		if not dryrun and choice in ['Y', 'y']:
 			page = pywikibot.ItemPage.createNew(site, labels={'en': data['label']}, descriptions={'en': data['description']})
 			
-			addClaimToItem(site, page, 'P51', data['aioid'])
+			aioidClaim = pywikibot.Claim(site, 'P51')
+			aioidClaim.setTarget(data['aioid'])
+			page.addClaim(aioidClaim)
+			
+			urlClaim = pywikibot.Claim(site, 'P52')
+			urlClaim.setTarget(data['url'])
+			aioidClaim.addSource(urlClaim)
+			
 			addClaimToItem(site, page, 'P25', data['ipr'])
 			
 			transClaim = pywikibot.Claim(site, 'P11')
