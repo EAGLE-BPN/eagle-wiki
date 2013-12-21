@@ -87,10 +87,6 @@ def main():
 			idClaim.setTarget(data['petrae_id'])
 			page.addClaim(idClaim)
 			
-			urlClaim = pywikibot.Claim(site, 'P52')
-			urlClaim.setTarget(data['url'])
-			idClaim.addSource(urlClaim)
-			
 			addClaimToItem(site, page, 'P25', data['ipr'])
 			
 			transClaim = pywikibot.Claim(site, 'P15')
