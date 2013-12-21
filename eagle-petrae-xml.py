@@ -61,7 +61,8 @@ def main():
 		# References
 		refElem = soup.find('div', type='bibliography').find('p')
 		data['references'] = elementText(refElem)
-		pywikibot.output('References: ' + data['references'])
+		if data['references'] != '':
+			pywikibot.output('References: ' + data['references'])
 			
  		pywikibot.output('') # newline
 		
@@ -95,9 +96,10 @@ def main():
 			
 			sources = []
 			
-			refClaim = pywikibot.Claim(site, 'P54')
-			refClaim.setTarget(data['references'])
-			sources.append(refClaim)
+			if data['references'] != '':
+				refClaim = pywikibot.Claim(site, 'P54')
+				refClaim.setTarget(data['references'])
+				sources.append(refClaim)
 			
 			transClaim.addSources(sources)
 
