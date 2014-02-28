@@ -3,8 +3,8 @@
 import pywikibot, os, csv, webbrowser, re
 from bs4 import BeautifulSoup
 
-DATA_DIR = '/Users/pietro/Downloads/AIO/data/'
-CSVFILE = '/Users/pietro/Downloads/AIO/AIO.csv'
+DATA_DIR = '/Users/pietro/EAGLE-data/AIO/data/'
+CSVFILE = '/Users/pietro/EAGLE-data/AIO/AIO.csv'
 
 LICENSE = 'Creative Commons Attribution-ShareAlike 3.0 http://creativecommons.org/licenses/by-sa/3.0/'
 AUTHOR = 'Stephen Lambert'

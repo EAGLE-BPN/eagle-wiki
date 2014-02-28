@@ -3,7 +3,7 @@
 import pywikibot, os, re, csv
 import xml.etree.ElementTree as ET
 
-DATA_DIR = '/Users/pietro/Dropbox/Dati/insAph/data/'
+DATA_DIR = '/Users/pietro/EAGLE-data/insAph/data/'
 
 LICENSE = "Creative Commons licence Attribution 2.5 (http://creativecommons.org/licenses/by/2.5/).\
  All reuse or distribution of this work must contain somewhere a link back to the URL http://insaph.kcl.ac.uk/"

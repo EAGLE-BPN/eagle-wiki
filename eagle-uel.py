@@ -7,7 +7,7 @@
 import pywikibot, re
 import xml.etree.ElementTree as ET
 
-FILE_PATH = '/Users/pietro/Dropbox/Dati/UbiEratLupa.xml'
+FILE_PATH = '/Users/pietro/EAGLE-data/UbiEratLupa.xml'
 IPR = 'CC0'
 
 def main():

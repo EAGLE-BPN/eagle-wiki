@@ -3,7 +3,7 @@
 import pywikibot, csv, re, urllib2
 import xml.etree.ElementTree as ET
 
-DATA_FILE = '/Users/pietro/Dropbox/Dati/elte.csv'
+DATA_FILE = '/Users/pietro/EAGLE-data/elte.csv'
 
 def main():
 	always = dryrun = startsWith = False
