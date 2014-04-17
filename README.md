@@ -10,6 +10,7 @@ Import scripts have been developed for the following datasets:
 * Attic Inscriptions Online
 * InsAph
 * ELTE
+* Universitatea Babes Bolyai
 
 More information on EAGLE here:
 http://eagle-network.eu/
