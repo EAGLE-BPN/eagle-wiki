@@ -4,9 +4,11 @@ import pywikibot, re
 from bs4 import BeautifulSoup
 
 FILE_PATH = '/Users/pietro/EAGLE-data/ubbeagleALL.xml'
+AUTHORITY = 'Universitatea Babeş-Bolyai'
 
 def main():
 	always = dryrun = startsWith = False
+	edhRegex = re.compile('\s*(HD\d+)[\s.]*')
 	
 	# Handles command-line arguments for pywikibot.
 	for arg in pywikibot.handleArgs():
@@ -57,9 +59,9 @@ def main():
 		# Author
 		data['author'] = elementText(xml_item.teiheader.revisiondesc.change)
 		pywikibot.output("Author: " + data['author'])
-		if(data['author'] == 'Rada Varga'):
+		if data['author'] == 'Rada Varga':
 			data['trans_lang'] = 'en'
-		elif(data['author'] == 'Ioan Piso'):
+		elif data['author'] == 'Ioan Piso':
 			data['trans_lang'] = 'fr'
 		else:
 			pywikibot.output('ERROR! Author not recognized!')
@@ -71,11 +73,24 @@ def main():
 		data['ipr'] = xml_item.find('text').body.find('div', {'type': 'translation'}).desc.ref['target']
 		pywikibot.output("IPR: " + data['ipr'])
 		
-		# Tries to find the EDH number in bibliography
-		bibl = xml_item.find('text').body.find('div', {'type': 'bibliography'}) \
-			.find('bibl', text=re.compile('\s*(HD\d+)[\s.]*'))
-		if bibl:
-			data['edh'] = elementText(bibl).replace('.', '') # sometimes a dot is added in the end
+		# Publisher
+		data['publisher'] = AUTHORITY
+		# data['publisher'] = elementText(xml_item.teiheader.filedesc.publicationstmt.authority).title()
+		pywikibot.output("Publisher: " + data['publisher'])
+		
+		# Process bibliography
+		data['bibliography'] = []
+		bibList = xml_item.find('text').body.find('div', {'type': 'bibliography'}).find_all('bibl')
+		for b in bibList:
+			bibText = elementText(b)
+			match = edhRegex.match(bibText)
+			if match:
+				data['edh'] = match.group(1)
+			else:
+				data['bibliography'].append(bibText)
+				pywikibot.output('Bib note #' + str(len(data['bibliography'])) + ': ' + bibText)
+				
+		if 'edh' in data:
 			pywikibot.output("EDH: " + data['edh'])
 		
 		# Images
@@ -86,7 +101,7 @@ def main():
 				# Wikidata only wants the image title
 				img_title = i['url'].replace('https://commons.wikimedia.org/wiki/File:', '')
 				data['images'].append(img_title)
-				pywikibot.output('Image: ' + i['url'])
+				pywikibot.output('Image #' + str(len(data['images'])) + ': ' + i['url'])
 		except AttributeError: # No <facsimile>
 			pass
 		
@@ -105,7 +120,7 @@ def main():
 		if not dryrun and choice in ['Y', 'y']:
 			page = pywikibot.ItemPage.createNew(site,\
 				labels={'en': data['label']},\
-				descriptions={'en': data['description']})
+				descriptions={data['trans_lang']: data['description']})
 			
 			addClaimToItem(site, page, 'P59', data['ubb'])
 			addClaimToItem(site, page, 'P25', data['ipr'])
@@ -130,6 +145,15 @@ def main():
 			authorClaim = pywikibot.Claim(site, 'P21')
 			authorClaim.setTarget(data['author'])
 			sources.append(authorClaim)
+			
+			publisherClaim = pywikibot.Claim(site, 'P41')
+			publisherClaim.setTarget(data['publisher'])
+			sources.append(publisherClaim)
+			
+			for b in data['bibliography']:
+				bibClaim = pywikibot.Claim(site, 'P54')
+				bibClaim.setTarget(b)
+				sources.append(bibClaim)
 		
 			transClaim.addSources(sources)
 
