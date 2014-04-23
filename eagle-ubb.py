@@ -83,6 +83,8 @@ def main():
 		bibList = xml_item.find('text').body.find('div', {'type': 'bibliography'}).find_all('bibl')
 		for b in bibList:
 			bibText = elementText(b)
+			if not bibText:
+				continue
 			match = edhRegex.match(bibText)
 			if match:
 				data['edh'] = match.group(1)
