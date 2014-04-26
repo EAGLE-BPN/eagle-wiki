@@ -14,7 +14,7 @@ import pywikibot, csv
 DATA_FILE = '/Users/pietro/EAGLE-data/trismegistos_to_insert.csv'
 
 def main():
-	always = dryrun = False
+	always = dryrun = startsWith = False
 	
 	# Handles command-line arguments for pywikibot.
 	for arg in pywikibot.handleArgs():
@@ -22,6 +22,8 @@ def main():
 			dryrun = True
 		if arg == '-always': # Does not ask for confirmation
 			always = True
+		if arg.startswith('-start:'): # Example: -start:Q4700
+			startsWith = arg.replace('-start:', '')
 	
 	# pywikibot/families/eagle_family.py
 	site = pywikibot.Site('en', 'eagle').data_repository()
@@ -30,6 +32,13 @@ def main():
 	reader = csv.reader(f)
 	for row in reader:
 		id = row[0]
+		
+		if startsWith:
+			if id != startsWith:
+				continue # Skips monuments until start
+			elif id == startsWith:
+				startsWith = False # Resets
+		
 		edh = row[1]
 		tmid = row[2]
 		
