@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pywikibot, operator
+from pywikibot import pagegenerators
 
 """
 
@@ -9,7 +10,8 @@ The title of the link is the content of the property specified via the -property
 
 Parameters:
 	-file:
-		File containing the IDs of the elements to list, one per row, without brackets.
+		Optional argument. File containing the IDs of the elements to list, one per row, without brackets.
+		If not specified, the script fetches all items containing the property indicated with -property.
 	
 	-property:
 		Number of the property to get.
@@ -49,6 +51,7 @@ def main():
 	repo = site.data_repository()
 	
 	sort = SORT_PROP
+	fileName = None
 	# Handles command-line arguments for pywikibot.
 	for arg in pywikibot.handleArgs():
 		if arg.startswith('-file:'):
@@ -61,11 +64,20 @@ def main():
 	propertyId = 'p' + prop # Example: "p11"
 	
 	ids = [] # Array of item IDs
-	with open(fileName, 'r') as f:
-		for id in f:
-			id = id.strip() # strip newline
-			ids.append(id)
-	
+	if fileName:
+		with open(fileName, 'r') as f:
+			for id in f:
+				id = id.strip() # strip newline
+				ids.append(id)
+	else:
+		propPage = pywikibot.PropertyPage(repo, 'Property:P' + prop)
+		refGen = pywikibot.pagegenerators.ReferringPageGenerator(propPage, followRedirects=False,
+                           withTemplateInclusion=False,
+                           onlyTemplateInclusion=False)
+        for i in refGen:
+        	if i.namespace() == 120: # quite ugly, to improve
+        		ids.append(i.title(withNamespace=False))
+			
 	idString = '|'.join(ids) # Concatenated IDs for API call
 	result = repo.loadcontent({'ids': idString}) # API call
 	
