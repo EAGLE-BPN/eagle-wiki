@@ -97,33 +97,37 @@ def main():
 				choice = 'y'
 
 		if not dryrun and choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site,\
-				labels={'en': data['label']},\
-				descriptions={'en': data['description']})
-		
-			addClaimToItem(site, page, 'P47', data['id'])
-			addClaimToItem(site, page, 'P25', data['ipr'])
-		
-			transClaim = pywikibot.Claim(site, 'P11')
-			transClaim.setTarget(data['translationEn'])
-			page.addClaim(transClaim)
-		
-			sources = []
-		
-			publisherClaim = pywikibot.Claim(site, 'P41')
-			publisherClaim.setTarget(data['publisher'])
-			sources.append(publisherClaim)
-		
-			yearClaim = pywikibot.Claim(site, 'P29')
-			yearClaim.setTarget(data['year'])
-			sources.append(yearClaim)
+			try:
+				page = pywikibot.ItemPage.createNew(site,\
+					labels={'en': data['label']},\
+					descriptions={'en': data['description']})
 			
-			for ref in data['references']:
-				refClaim = pywikibot.Claim(site, 'P54')
-				refClaim.setTarget(ref)
-				sources.append(refClaim)
+				addClaimToItem(site, page, 'P47', data['id'])
+				addClaimToItem(site, page, 'P25', data['ipr'])
 		
-			transClaim.addSources(sources)
+				transClaim = pywikibot.Claim(site, 'P11')
+				transClaim.setTarget(data['translationEn'])
+				page.addClaim(transClaim)
+		
+				sources = []
+		
+				publisherClaim = pywikibot.Claim(site, 'P41')
+				publisherClaim.setTarget(data['publisher'])
+				sources.append(publisherClaim)
+		
+				yearClaim = pywikibot.Claim(site, 'P29')
+				yearClaim.setTarget(data['year'])
+				sources.append(yearClaim)
+			
+				for ref in data['references']:
+					refClaim = pywikibot.Claim(site, 'P54')
+					refClaim.setTarget(ref)
+					sources.append(refClaim)
+		
+				transClaim.addSources(sources)
+			
+			except pywikibot.data.api.APIError as e:
+				pywikibot.output(e)
 
 def addClaimToItem(site, page, id, value):
 	"""Adds a claim to an ItemPage."""

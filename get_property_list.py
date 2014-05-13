@@ -43,6 +43,7 @@ Output:
 
 SORT_TITLES = 'titles'
 SORT_PROP = 'prop'
+API_LIMIT = 500
 
 def main():
 	
@@ -78,9 +79,7 @@ def main():
         	if i.namespace() == 120: # quite ugly, to improve
         		ids.append(i.title(withNamespace=False))
 			
-	idString = '|'.join(ids) # Concatenated IDs for API call
-	result = repo.loadcontent({'ids': idString}) # API call
-	
+	result = loadItems(repo, ids)
 	output = [] # List of dictionaries {title, prop}
 	
 	for id, item in result.items():
@@ -97,6 +96,25 @@ def main():
 	
 	for i in output:
 		print '* [[' + i['title'] + '|' + i['prop'] + ']]'
+
+def loadItems(repo, idList):
+	chunks = divide(idList, API_LIMIT)
+	result = {}
+	for ids in chunks:
+		idString = '|'.join(ids) # Concatenated IDs for API call
+		result.update(repo.loadcontent({'ids': idString})) # API call
+	return result
+
+# Divides a list in blocks of size "size".
+# Returns a list of lists.
+def divide(theList, size):
+	result = []
+	lst = list(theList) # copy
+	while len(lst)>size:
+		result.append(lst[0:size])
+		lst = lst[size:]
+	result.append(lst)
+	return result
 
 if __name__ == "__main__":
     try:
