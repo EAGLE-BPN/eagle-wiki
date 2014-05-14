@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wikitems>
+        <TEI xmlns="http://www.tei-c.org/ns/1.0">
+                <teiHeader>
+                        <fileDesc>
+                                <titleStmt>
+                                        <title xml:lang="en">Fragment of epitaph on stele</title>
+                                        <title xml:lang="de">Grabinschrift auf Stele</title>
+                                        <title xml:lang="it"/>
+                                        <title xml:lang="es"/>
+                                        <title xml:lang="fr"/>
+                                        <editor role="translator" lang="en">Ulrich Gehn</editor>
+                                        <editor role="translator" lang="de">Ulrich Gehn</editor>
+                                        <editor role="translator" lang="hu">Borhy, László</editor>
+                                </titleStmt>
+                                <publicationStmt>
+                                        <authority>Europeana Network of Ancient Greek and Latin
+                                                Epigraphy</authority>
+                                        <idno type="urn:cts">urn:cts:tm:196889.eagle:HD039570</idno>
+                                        <availability>
+                                                <p>
+                                                  <ref type="license"
+                                                  target="http://creativecommons.org/licenses/by-sa/3.0/"
+                                                  />
+                                                </p>
+                                        </availability>
+                                </publicationStmt>
+                                <sourceDesc>
+                                        <p/>
+                                </sourceDesc>
+                        </fileDesc>
+                        <profileDesc>
+                                <langUsage>
+                                        <language ident="en"/>
+                                        <language ident="grc"/>
+                                        <language ident="la"/>
+                                        <language ident="fr"/>
+                                        <language ident="de"/>
+                                        <language ident="grc-Latn"/>
+                                        <language ident="la-Grek"/>
+                                        <language ident="cop"/>
+                                </langUsage>
+                        </profileDesc>
+                        <revisionDesc>
+                                <change when="2014-05-14T"
+                                        who="http://http://data.perseus.org/sosol/users/Bridget%20Almas"
+                                        >Eagle mediawiki - perseids epidoc</change>
+                        </revisionDesc>
+                </teiHeader>
+                <text xml:lang="eng">
+                        <body>
+                                <div xml:lang="eng" type="translation" xml:space="preserve" n="urn:cts:tm:196889.eagle:HD039570">
+                                    ... Titius (?) Quintus and Valeria Servata, her parents, saw to it that this was made for their daughter.
+                            </div>
+                                <div xml:lang="de" type="translation" xml:space="preserve" n="urn:cts:tm:196889.eagle:HD039570">
+                                    ...Titius (?) Quintus und Valeria Servata, ihre Eltern, sorgten dafür, dass dies für ihre Tochter gemacht wurde.
+                            </div>
+                                <div xml:lang="hu" type="translation" xml:space="preserve" n="urn:cts:tm:196889.eagle:HD039570">
+                                    …-ának, Titius Quintus és Valeria Servata, a szülei, leányuk számára állíttatták (a sírfeliratot).
+                            </div>
+                        </body>
+                </text>
+        </TEI>
+        <TEI xmlns="http://www.tei-c.org/ns/1.0">
+                <teiHeader>
+                        <fileDesc>
+                                <titleStmt>
+                                        <title xml:lang="en">Honorific inscription to L. Alfenus
+                                                Avitianus</title>
+                                        <title xml:lang="de">Ehreninschrift für Lucius Alfenus
+                                                Avitianus</title>
+                                        <title xml:lang="it"/>
+                                        <title xml:lang="es">Honra pública a L. Alfenus
+                                                Avitianus</title>
+                                        <title xml:lang="fr"/>
+                                        <editor role="translator" lang="es">unknown</editor>
+                                </titleStmt>
+                                <publicationStmt>
+                                        <authority>Europeana Network of Ancient Greek and Latin
+                                                Epigraphy</authority>
+                                        <idno type="urn:cts">urn:cts:eagle:HE2</idno>
+                                        <availability>
+                                                <p>
+                                                  <ref type="license"
+                                                  target="http://creativecommons.org/licenses/by-sa/3.0/"
+                                                  />
+                                                </p>
+                                        </availability>
+                                </publicationStmt>
+                                <sourceDesc>
+                                        <p/>
+                                </sourceDesc>
+                        </fileDesc>
+                        <profileDesc>
+                                <langUsage>
+                                        <language ident="en"/>
+                                        <language ident="grc"/>
+                                        <language ident="la"/>
+                                        <language ident="fr"/>
+                                        <language ident="de"/>
+                                        <language ident="grc-Latn"/>
+                                        <language ident="la-Grek"/>
+                                        <language ident="cop"/>
+                                </langUsage>
+                        </profileDesc>
+                        <revisionDesc>
+                                <change when="2014-05-14T"
+                                        who="http://http://data.perseus.org/sosol/users/Bridget%20Almas"
+                                        >Eagle mediawiki - perseids epidoc</change>
+                        </revisionDesc>
+                </teiHeader>
+                <text xml:lang="eng">
+                        <body>
+                                <div xml:lang="es" type="translation" xml:space="preserve" n="urn:cts:eagle:HE2">
+                                    A Lucio Alfeno Avitiano, de la tribu Arnensis, los ciudadanos de la república (¿abulenses ?) decretaron...
+                            </div>
+                        </body>
+                </text>
+        </TEI>
+        <TEI xmlns="http://www.tei-c.org/ns/1.0">
+                <teiHeader>
+                        <fileDesc>
+                                <titleStmt>
+                                        <title xml:lang="en">CIL VI, 41431</title>
+                                        <title xml:lang="de"/>
+                                        <title xml:lang="it"/>
+                                        <title xml:lang="es"/>
+                                        <title xml:lang="fr"/>
+                                        <editor role="translator" lang="en">Anita Rocco</editor>
+                                        <editor role="translator" lang="it">Anita Rocco</editor>
+                                </titleStmt>
+                                <publicationStmt>
+                                        <authority>Europeana Network of Ancient Greek and Latin
+                                                Epigraphy</authority>
+                                        <idno type="urn:cts">urn:cts:eagle:EDB13869</idno>
+                                        <availability>
+                                                <p>
+                                                  <ref type="license"
+                                                  target="http://creativecommons.org/licenses/by-sa/3.0/"
+                                                  />
+                                                </p>
+                                        </availability>
+                                </publicationStmt>
+                                <sourceDesc>
+                                        <p/>
+                                </sourceDesc>
+                        </fileDesc>
+                        <profileDesc>
+                                <langUsage>
+                                        <language ident="en"/>
+                                        <language ident="grc"/>
+                                        <language ident="la"/>
+                                        <language ident="fr"/>
+                                        <language ident="de"/>
+                                        <language ident="grc-Latn"/>
+                                        <language ident="la-Grek"/>
+                                        <language ident="cop"/>
+                                </langUsage>
+                        </profileDesc>
+                        <revisionDesc>
+                                <change when="2014-05-14T"
+                                        who="http://http://data.perseus.org/sosol/users/Bridget%20Almas"
+                                        >Eagle mediawiki - perseids epidoc</change>
+                        </revisionDesc>
+                </teiHeader>
+                <text xml:lang="eng">
+                        <body>
+                                <div xml:lang="eng" type="translation" xml:space="preserve" n="urn:cts:eagle:EDB13869">
+                                    For Aurelius, eques romanus, sweet and incomparable son, who lived for 5 years and 12 days, died on September 5th,  laid to rest  on September 7th, parents Tullianus and Aristia remaining a huge sorrow for that in them
+                            </div>
+                                <div xml:lang="it" type="translation" xml:space="preserve" n="urn:cts:eagle:EDB13869">
+                                    Per Aurelio, cavaliere romano, figlio dolcissimo e incomparabile, che visse 5 anni e 12 giorni, morto il 5 settembre, deposto il 7 settembre, i genitori Tulliano e Aristia essendo rimasto a loro un grandissimo dolore per questo
+                            </div>
+                        </body>
+                </text>
+        </TEI>
+        <TEI xmlns="http://www.tei-c.org/ns/1.0">
+                <teiHeader>
+                        <fileDesc>
+                                <titleStmt>
+                                        <title xml:lang="en">Boundary marker, set up by C. Julius
+                                                Zoilos</title>
+                                        <title xml:lang="de">Grenzstein, aufgestellt von C. Iulius
+                                                Zoilos</title>
+                                        <title xml:lang="it"/>
+                                        <title xml:lang="es"/>
+                                        <title xml:lang="fr"/>
+                                        <editor role="translator" lang="en">Joyce M.
+                                                Reynolds</editor>
+                                </titleStmt>
+                                <publicationStmt>
+                                        <authority>Europeana Network of Ancient Greek and Latin
+                                                Epigraphy</authority>
+                                        <idno type="urn:cts">urn:cts:eagle:iAph010001</idno>
+                                        <availability>
+                                                <p>
+                                                  <ref type="license"
+                                                  target="http://creativecommons.org/licenses/by-sa/3.0/"
+                                                  />
+                                                </p>
+                                        </availability>
+                                </publicationStmt>
+                                <sourceDesc>
+                                        <p/>
+                                </sourceDesc>
+                        </fileDesc>
+                        <profileDesc>
+                                <langUsage>
+                                        <language ident="en"/>
+                                        <language ident="grc"/>
+                                        <language ident="la"/>
+                                        <language ident="fr"/>
+                                        <language ident="de"/>
+                                        <language ident="grc-Latn"/>
+                                        <language ident="la-Grek"/>
+                                        <language ident="cop"/>
+                                </langUsage>
+                        </profileDesc>
+                        <revisionDesc>
+                                <change when="2014-05-14T"
+                                        who="http://http://data.perseus.org/sosol/users/Bridget%20Almas"
+                                        >Eagle mediawiki - perseids epidoc</change>
+                        </revisionDesc>
+                </teiHeader>
+                <text xml:lang="eng">
+                        <body>
+                                <div xml:lang="eng" type="translation" xml:space="preserve" n="urn:cts:eagle:iAph010001">
+                                    [?This area is] the sacred asylum [?as defined by] the great [?Caesar, the] Dictator, and [?his son] Imperator [Caesar and the ] Senate [and People] of Rome, [as is also contained in the] grants of privilege, the public documents [and decrees. C. Iulius Zoilos priest of Aphrodite set up the boundary stones.] http://www.flickr.com/photos/julio-claudians/7110515237/in/set-72157629894148755/lightbox/
+                            </div>
+                        </body>
+                </text>
+        </TEI>
+        <TEI xmlns="http://www.tei-c.org/ns/1.0">
+                <teiHeader>
+                        <fileDesc>
+                                <titleStmt>
+                                        <title xml:lang="en"/>
+                                        <title xml:lang="de"/>
+                                        <title xml:lang="it"/>
+                                        <title xml:lang="es"/>
+                                        <title xml:lang="fr">Épitaphe du marbrier L. Iulius
+                                                Cadgatus, dit Tripondius</title>
+                                        <editor role="translator" lang="fr">unknown</editor>
+                                </titleStmt>
+                                <publicationStmt>
+                                        <authority>Europeana Network of Ancient Greek and Latin
+                                                Epigraphy</authority>
+                                        <idno type="urn:cts">urn:cts:eagle:petrae160100200008</idno>
+                                        <availability>
+                                                <p>
+                                                  <ref type="license"
+                                                  target="http://creativecommons.org/licenses/by-sa/3.0/"
+                                                  />
+                                                </p>
+                                        </availability>
+                                </publicationStmt>
+                                <sourceDesc>
+                                        <p/>
+                                </sourceDesc>
+                        </fileDesc>
+                        <profileDesc>
+                                <langUsage>
+                                        <language ident="en"/>
+                                        <language ident="grc"/>
+                                        <language ident="la"/>
+                                        <language ident="fr"/>
+                                        <language ident="de"/>
+                                        <language ident="grc-Latn"/>
+                                        <language ident="la-Grek"/>
+                                        <language ident="cop"/>
+                                </langUsage>
+                        </profileDesc>
+                        <revisionDesc>
+                                <change when="2014-05-14T"
+                                        who="http://http://data.perseus.org/sosol/users/Bridget%20Almas"
+                                        >Eagle mediawiki - perseids epidoc</change>
+                        </revisionDesc>
+                </teiHeader>
+                <text xml:lang="eng">
+                        <body>
+                                <div xml:lang="de" type="translation" xml:space="preserve" n="urn:cts:eagle:petrae160100200008">
+                                    Aux dieux Mânes, à Lucius Iulius Cadgatus, dit Tripondius, marbrier
+                            </div>
+                        </body>
+                </text>
+        </TEI>
+        <TEI xmlns="http://www.tei-c.org/ns/1.0">
+                <teiHeader>
+                        <fileDesc>
+                                <titleStmt>
+                                        <title xml:lang="en">Dedication to Zeno, emperor, just
+                                                possibly for statue. Salona (Dalmatia).
+                                                474-491</title>
+                                        <title xml:lang="de"/>
+                                        <title xml:lang="it"/>
+                                        <title xml:lang="es"/>
+                                        <title xml:lang="fr"/>
+                                        <editor role="translator" lang="en">unknown</editor>
+                                </titleStmt>
+                                <publicationStmt>
+                                        <authority>Europeana Network of Ancient Greek and Latin
+                                                Epigraphy</authority>
+                                        <idno type="urn:cts">urn:cts:eagle:LSA-13</idno>
+                                        <availability>
+                                                <p>
+                                                  <ref type="license"
+                                                  target="http://creativecommons.org/licenses/by-sa/3.0/"
+                                                  />
+                                                </p>
+                                        </availability>
+                                </publicationStmt>
+                                <sourceDesc>
+                                        <p/>
+                                </sourceDesc>
+                        </fileDesc>
+                        <profileDesc>
+                                <langUsage>
+                                        <language ident="en"/>
+                                        <language ident="grc"/>
+                                        <language ident="la"/>
+                                        <language ident="fr"/>
+                                        <language ident="de"/>
+                                        <language ident="grc-Latn"/>
+                                        <language ident="la-Grek"/>
+                                        <language ident="cop"/>
+                                </langUsage>
+                        </profileDesc>
+                        <revisionDesc>
+                                <change when="2014-05-14T"
+                                        who="http://http://data.perseus.org/sosol/users/Bridget%20Almas"
+                                        >Eagle mediawiki - perseids epidoc</change>
+                        </revisionDesc>
+                </teiHeader>
+                <text xml:lang="eng">
+                        <body>
+                                <div xml:lang="eng" type="translation" xml:space="preserve" n="urn:cts:eagle:LSA-13">
+                                    To our lord Zeno, eternal Augustus.
+                            </div>
+                        </body>
+                </text>
+        </TEI>
+        <TEI xmlns="http://www.tei-c.org/ns/1.0">
+                <teiHeader>
+                        <fileDesc>
+                                <titleStmt>
+                                        <title xml:lang="en"/>
+                                        <title xml:lang="de"/>
+                                        <title xml:lang="it"/>
+                                        <title xml:lang="es"/>
+                                        <title xml:lang="fr"/>
+                                        <editor role="translator" lang="en">Anita Rocco</editor>
+                                        <editor role="translator" lang="it">Carlo Carletti</editor>
+                                        <editor role="translator" lang="hr">unknown</editor>
+                                </titleStmt>
+                                <publicationStmt>
+                                        <authority>Europeana Network of Ancient Greek and Latin
+                                                Epigraphy</authority>
+                                        <idno type="urn:cts">urn:cts:eagle:EDB21383</idno>
+                                        <availability>
+                                                <p>
+                                                  <ref type="license"
+                                                  target="http://creativecommons.org/licenses/by-sa/3.0/"
+                                                  />
+                                                </p>
+                                        </availability>
+                                </publicationStmt>
+                                <sourceDesc>
+                                        <p/>
+                                </sourceDesc>
+                        </fileDesc>
+                        <profileDesc>
+                                <langUsage>
+                                        <language ident="en"/>
+                                        <language ident="grc"/>
+                                        <language ident="la"/>
+                                        <language ident="fr"/>
+                                        <language ident="de"/>
+                                        <language ident="grc-Latn"/>
+                                        <language ident="la-Grek"/>
+                                        <language ident="cop"/>
+                                </langUsage>
+                        </profileDesc>
+                        <revisionDesc>
+                                <change when="2014-05-14T"
+                                        who="http://http://data.perseus.org/sosol/users/Bridget%20Almas"
+                                        >Eagle mediawiki - perseids epidoc</change>
+                        </revisionDesc>
+                </teiHeader>
+                <text xml:lang="eng">
+                        <body>
+                                <div xml:lang="eng" type="translation" xml:space="preserve" n="urn:cts:eagle:EDB21383">
+                                    Flavius Euryalus, honest man, in life bought for himself a sepulcher at the tomb of blessed martyr Lawrence, in the crypt, to the the right as one descend, by Faustinus, fossor of the place itself. On April 29th in the year of the second consulate of Flavius ​​Stilicho.
+                            </div>
+                                <div xml:lang="it" type="translation" xml:space="preserve" n="urn:cts:eagle:EDB21383">
+                                    Flavio Eurialo, uomo onesto, in vita acquistò per sé il sepolcro presso la tomba del beato martire Lorenzo, nella cripta, a destra di chi scende, da Faustino, fossore del luogo stesso. Il giorno 29 aprile dell'anno del secondo consolato di Flavio Stilicone
+                            </div>
+                                <div xml:lang="hr" type="translation" xml:space="preserve" n="urn:cts:eagle:EDB21383">
+                                    Flavije Eurijal, pošten čovjek, za života si je kupio grobno mjesto kod menze blaženoga mučenika Lovre, u kripti, desno, dok se silazi, od groba Faustina koji ju je iskopao. Dana 29. aprila, za drugog konzulata Flavija Stilihona.
+                            </div>
+                        </body>
+                </text>
+        </TEI>
+</wikitems>
