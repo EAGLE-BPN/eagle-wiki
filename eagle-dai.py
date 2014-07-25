@@ -22,7 +22,6 @@ def main():
 	if not dryrun:
 		# pywikibot/families/eagle_family.py
 		site = pywikibot.Site('en', 'eagle').data_repository()
-		commons = pywikibot.Site('commons', 'commons')
 		
 	# Correct "natural" file sorting
 	for fileName in sorted(os.listdir(DATA_FOLDER)):
