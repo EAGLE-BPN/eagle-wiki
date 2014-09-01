@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<create urn="urn:cts:pdlepi:eagle.tm179252"
+        pubtype="translation"
+        type="EpiTransCTSIdentifier">
+   <TEI xmlns="http://www.tei-c.org/ns/1.0">
+      <teiHeader>
+         <fileDesc>
+            <titleStmt>
+               <title xml:lang="fr">Inscription votive</title>
+               <editor role="translator" xml:lang="fr">Ioan Piso</editor>
+               <editor role="translator" xml:lang="en">http://data.perseus.org/users/Bridget%20Almas</editor>
+            </titleStmt>
+            <publicationStmt>
+               <authority>Europeana Network of Ancient Greek and Latin Epigraphy</authority>
+               <idno type="urn:cts">urn:cts:pdlepi:eagle.tm179252</idno>
+               <idno type="http://www.eagle-network.eu">q5016</idno>
+               <idno type="EDH">HD029889</idno>
+               <availability>
+                  <p>
+                     <ref type="license" target="http://creativecommons.org/licenses/by-sa/3.0/"/>
+                  </p>
+               </availability>
+               <distributor>http://www.eagle-network.eu</distributor>
+            </publicationStmt>
+            <sourceDesc>
+               <p>I. Téglás, AÉrt 30, 19, p. 128-129, fig. 7 ( photo )</p>
+               <p>AE 19, 11</p>
+               <p>ILD 470</p>
+            </sourceDesc>
+         </fileDesc>
+         <profileDesc>
+            <langUsage>
+               <language ident="en"/>
+               <language ident="grc"/>
+               <language ident="la"/>
+               <language ident="fr"/>
+               <language ident="de"/>
+               <language ident="grc-Latn"/>
+               <language ident="la-Grek"/>
+               <language ident="cop"/>
+            </langUsage>
+         </profileDesc>
+         <revisionDesc>
+            <change who="http://data.perseus.org/users/Bridget%20Almas">
+                        Imported from http://www.eagle-network.eu/wiki/index.php/Item:q5016</change>
+         </revisionDesc>
+      </teiHeader>
+      <text xml:lang="fr">
+         <body>
+            <div xml:lang="fr" type="translation" xml:space="preserve" n="urn:cts:pdlepi:eagle.tm179252">
+                                    <ab>À Jupiter très bon ( et ) très grand. Petronius Marcianus s’est acquitté de ( son ) vœu de bon gré.</ab>
+                                </div>
+         </body>
+      </text>
+   </TEI>
+</create>
