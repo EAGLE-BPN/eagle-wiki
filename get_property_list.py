@@ -131,7 +131,7 @@ def main():
 		output = sorted(output, key=operator.itemgetter('label'))
 	
 	for i in output:
-		print '* [[' + i['title'] + '|' + i[show] + ']]'
+		pywikibot.output('* [[' + i['title'] + '|' + i[show] + ']]')
 
 def loadItems(repo, idList):
 	chunks = divide(idList, API_LIMIT)
