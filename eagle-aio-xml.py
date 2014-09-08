@@ -40,13 +40,13 @@ def main():
 		soup = BeautifulSoup(open(DATA_DIR + fileName))
 		
 		# Label and description
-		#data['description'] = elementText(soup.root.translation_source)
 		data['label'] = elementText(soup.translation_source)
+		data['description'] = elementText(soup.root.translation_title)
 		
 		pywikibot.output("\n>>>>> " + data['label'] + " <<<<<\n")
 		pywikibot.output('Processing file ' + DATA_DIR + fileName)
 		pywikibot.output('Label: ' + data['label'])
-		#pywikibot.output('Description: ' + data['description'])
+		pywikibot.output('Description: ' + data['description'])
 		
 		# ID and URL
 		data['aioid'] = elementText(soup.aio_key).split('_')[1]
@@ -94,7 +94,7 @@ def main():
 				choice = None # Re-ask
 		
 		if not dryrun and choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site, labels={'en': data['label']})
+			page = pywikibot.ItemPage.createNew(site, labels={'en': data['label']}, descriptions={'en': data['description']})
 			
 			aioidClaim = pywikibot.Claim(site, 'P51')
 			aioidClaim.setTarget(data['aioid'])
