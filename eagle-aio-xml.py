@@ -50,7 +50,7 @@ def main():
 		
 		# ID and URL
 		data['aioid'] = elementText(soup.aio_key).split('_')[1]
-		data['url'] = elementText(soup.url)
+		data['url'] = 'http://' + elementText(soup.url)
 		pywikibot.output('AIO ID: ' + data['aioid'])
 		pywikibot.output('URL: ' + data['url'])
 		
