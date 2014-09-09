@@ -25,8 +25,6 @@ def main():
 	if not dryrun:
 		# pywikibot/families/eagle_family.py
 		site = pywikibot.Site('en', 'eagle').data_repository()
-	
-	urlDict = {}
 		
 	for fileName in os.listdir(DATA_DIR):
 		data = {} # Resets element info
