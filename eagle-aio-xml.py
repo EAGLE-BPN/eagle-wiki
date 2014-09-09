@@ -32,9 +32,9 @@ def main():
 		data = {} # Resets element info
 		
 		if startsWith:
-			if fileName != startsWith:
+			if fileName != startsWith + '.xml':
 				continue # Skips files until start
-			elif fileName == startsWith:
+			else:
 				startsWith = False # Resets
 		
 		soup = BeautifulSoup(open(DATA_DIR + fileName))
@@ -151,10 +151,13 @@ def replaceSuperscript(text):
 	return text
 
 def elementText(elem):
-	sups = elem.find_all('sup')
+	# We need to re-parse the XML in translation_source and translation_title because it's escaped.
+	soup = BeautifulSoup(elem.get_text(' ', strip=True))
+	
+	sups = soup.find_all('sup')
 	for i in sups:
 		i.replaceWith(replaceSuperscript(i.string))
-	text = elem.get_text(' ', strip=True)
+	text = soup.get_text(' ', strip=True)
 	text = text.replace(u' %sup%', '')
 	text = re.sub('\n', ' ', text)
 	text = re.sub('\s{2,}', ' ', text)
