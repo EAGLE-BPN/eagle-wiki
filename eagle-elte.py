@@ -81,7 +81,10 @@ def main():
 			descriptions = {}
 			if 'description' in data:
 				descriptions['de'] = data['description']
-			page = pywikibot.ItemPage.createNew(site, labels={'en': BorhyID}, descriptions=descriptions)
+			
+			page = pywikibot.ItemPage(site)
+			page.editEntity({'labels':{'en': BorhyID}, 'descriptions':descriptions})
+			page.get()
 		
 			# HU translation
 			transClaim = pywikibot.Claim(site, 'P19')

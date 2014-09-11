@@ -119,7 +119,8 @@ def main():
 			always = True
 			choice = 'y'
 		if not dryrun and choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site, labels={'en': bsr}, descriptions={'en': title})
+			page = pywikibot.ItemPage(site)
+			page.editEntity({'labels':{'en': bsr}, 'descriptions':{'en': title}})
 			
 			addClaimToItem(site, page, 'P40', bsr)
 			if edh:

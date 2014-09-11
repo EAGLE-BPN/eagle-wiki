@@ -125,15 +125,17 @@ def main():
 				choice = None # Re-ask
 		
 		if not dryrun and choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site, labels={'en': data['label']})
+			page = pywikibot.ItemPage(site)
+			page.editEntity({'labels': {'en': data['label']}})
+			page.get()
 			
-			aioidClaim = pywikibot.Claim(site, 'P63')
-			aioidClaim.setTarget(data['rib_id'])
-			page.addClaim(aioidClaim)
+			ribidClaim = pywikibot.Claim(site, 'P63')
+			ribidClaim.setTarget(data['rib_id'])
+			page.addClaim(ribidClaim)
 			
 			urlClaim = pywikibot.Claim(site, 'P52')
 			urlClaim.setTarget(data['url'])
-			aioidClaim.addSource(urlClaim)
+			ribidClaim.addSource(urlClaim)
 			
 			addClaimToItem(site, page, 'P25', data['ipr'])
 			

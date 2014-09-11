@@ -80,9 +80,9 @@ def main():
 				choice = None # Re-ask
 		
 		if not dryrun and choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site,\
-				labels={'en': data['label'], 'fr': data['label']},\
-				descriptions={'fr': data['description']})
+			page = pywikibot.ItemPage(site)
+			page.editEntity({'labels':{'en': data['label'], 'fr': data['label']}, 'descriptions':{'fr': data['description']}})
+			page.get()
 			
 			idClaim = pywikibot.Claim(site, 'P33')
 			idClaim.setTarget(data['petrae_id'])

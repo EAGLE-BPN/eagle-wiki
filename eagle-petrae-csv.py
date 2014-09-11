@@ -49,7 +49,9 @@ def main():
 			always = True
 			choice = 'y'
 		if not dryrun and choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site, labels={'fr': id})
+			page = pywikibot.ItemPage(site)
+			page.editEntity({'labels':{'fr': id}})
+			page.get()
 			
 			addClaimToItem(site, page, 'P33', id) # Petrae ID
 			if translationFr:

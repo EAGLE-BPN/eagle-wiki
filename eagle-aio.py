@@ -101,7 +101,9 @@ def main():
 				choice = None # Re-ask
 		
 		if not dryrun and choice in ['Y', 'y']:
-			page = pywikibot.ItemPage.createNew(site, labels={'en': data['label']}, descriptions={'en': data['description']})
+			page = pywikibot.ItemPage(site)
+			page.editEntity({'labels':{'en': data['label']}, 'descriptions':{'en': data['description']}})
+			page.get()
 			
 			aioidClaim = pywikibot.Claim(site, 'P51')
 			aioidClaim.setTarget(data['aioid'])
