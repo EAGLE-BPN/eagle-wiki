@@ -10,12 +10,15 @@ Import scripts have been developed for the following datasets:
 * Attic Inscriptions Online
 * InsAph
 * ELTE
-* Universitatea Babes Bolyai
+* Universitatea Babeş-Bolyai
+* Arachne - Deutsches Archäologisches Institut
+* Last Statue of Antiquities
+* Roman Inscriptions of Britain
 
 More information on EAGLE here:
 http://eagle-network.eu/
 
 Using [pywikipediabot rewrite branch](https://github.com/wikimedia/pywikibot-core).
-A [patch](https://gerrit.wikimedia.org/r/#/c/76527/4) was manually applied to pywikipediabot in order to create new items in Wikibase.
+A very small [patch](https://gerrit.wikimedia.org/r/#/c/159689/) was manually applied to pywikibot; it's a bugfix waiting to be merged into the master branch.
 
 The script uses extensively the Python [regex](http://docs.python.org/2/library/re.html) module, the [csv](http://docs.python.org/2/library/csv.html) module, [BeautifulSoup 4](http://www.crummy.com/software/BeautifulSoup/bs4/doc/), and the [XML etree](http://docs.python.org/2/library/xml.etree.elementtree.html) module.
