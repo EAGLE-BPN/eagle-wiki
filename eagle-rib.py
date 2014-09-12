@@ -7,6 +7,8 @@ DATA_DIR = '/Users/pietro/EAGLE-data/rib/'
 INDEX_FILE = 'doclist.xml'
 BASE_URL = 'http://romaninscriptionsofbritain.org/rib/inscriptions/'
 
+PUB_AUTHOR = 'Scott Vanderbilt'
+
 def main():
 	always = dryrun = startsWith = False
 	
@@ -48,6 +50,12 @@ def main():
 		pywikibot.output('Processing file ' + DATA_DIR + fileName)
 		pywikibot.output('Label: ' + data['label'])
 		
+		bibl = soup.teiheader.filedesc.sourcedesc.bibl
+		
+		# Description
+		data['description'] = elementText(bibl)
+		pywikibot.output('Description: ' + data['description'])
+		
 		# Translation EN:
 		transElem = soup.find('div', type='translation')
 		if transElem:
@@ -61,10 +69,6 @@ def main():
 			pywikibot.output('WARNING: no translation found! Skipping...')
 			continue
 		
-		# Description
-		#data['description'] = elementText(soup)
-		#pywikibot.output('Description: ' + data['description'])
-		
 		# ID and URL
 		data['rib_id'] = elementText(soup.teiheader.filedesc.publicationstmt.find('idno', type='rib'))
 		data['url'] = BASE_URL + data['rib_id']
@@ -76,15 +80,13 @@ def main():
 		data['ipr'] = elementText(licenseItem) + ' ' + licenseItem['target']
 		pywikibot.output('IPR: ' + data['ipr'])
 		
-		bibl = soup.teiheader.filedesc.sourcedesc.bibl
-		
 		# Publication title
 		data['pubTitle'] = elementText(bibl.title)
 		pywikibot.output('Publication title: ' + data['pubTitle'])
 		
-		# Publication place
-		data['pubPlace'] = elementText(bibl.pubplace)
-		pywikibot.output('Publication place: ' + data['pubPlace'])
+		# Publication author
+		data['pubAuthor'] = PUB_AUTHOR
+		pywikibot.output('Publication author: ' + data['pubAuthor'])
 		
 		# Publisher
 		data['publisher'] = elementText(bibl.publisher)
@@ -109,6 +111,14 @@ def main():
 			data['authors'].append(elementText(au))
 		pywikibot.output('Authors: ' + ', '.join(data['authors']))
 		
+		# EDH ID
+		edh_ref = soup.find('text').find('ref', target='bibA00118')
+		if edh_ref:
+			data['edh'] = elementText(edh_ref.find_next_sibling('biblscope', unit='dbid'))
+			pywikibot.output('EDH ID: ' + data['edh'])
+		else:
+			pywikibot.output('WARNING: no EDH ID found!')
+		
 		pywikibot.output('') # newline
 		
 		choice = None
@@ -126,16 +136,19 @@ def main():
 		
 		if not dryrun and choice in ['Y', 'y']:
 			page = pywikibot.ItemPage(site)
-			page.editEntity({'labels': {'en': data['label']}})
+			page.editEntity({'labels': {'en': data['label']}, 'descriptions':{'en': data['description']}})
 			page.get()
 			
 			ribidClaim = pywikibot.Claim(site, 'P63')
 			ribidClaim.setTarget(data['rib_id'])
 			page.addClaim(ribidClaim)
 			
-			urlClaim = pywikibot.Claim(site, 'P52')
-			urlClaim.setTarget(data['url'])
-			ribidClaim.addSource(urlClaim)
+			pubAuthorClaim = pywikibot.Claim(site, 'P46')
+			pubAuthorClaim.setTarget(data['pubAuthor'])
+			ribidClaim.addSource(pubAuthorClaim)
+			
+			if 'edh' in data:
+				addClaimToItem(site, page, 'P24', data['edh'])
 			
 			addClaimToItem(site, page, 'P25', data['ipr'])
 			
@@ -162,10 +175,6 @@ def main():
 			pagesClaim.setTarget(data['pages'])
 			sources.append(pagesClaim)
 			
-			pubPlaceClaim = pywikibot.Claim(site, 'P28')
-			pubPlaceClaim.setTarget(data['pubPlace'])
-			sources.append(pubPlaceClaim)
-			
 			publisherClaim = pywikibot.Claim(site, 'P41')
 			publisherClaim.setTarget(data['publisher'])
 			sources.append(publisherClaim)
@@ -182,36 +191,15 @@ def addClaimToItem(site, page, id, value):
 	claim = pywikibot.Claim(site, id)
 	claim.setTarget(value)
 	page.addClaim(claim)
-	
 
-def replaceSuperscript(text):
-	superRep = [
-		(u'1', u'¹'),
-		(u'2', u'²'),
-		(u'3', u'³'),
-		(u'4', u'⁴'),
-		(u'5', u'⁵'),
-		(u'6', u'⁶'),
-		(u'7', u'⁷'),
-		(u'8', u'⁸'),
-		(u'9', u'⁹'),
-		(u'0', u'⁰'),
-	]
-	for i in superRep:
-		text = text.replace(i[0], u'%sup%' + i[1])
-	return text
-	
 
 def elementText(elem):
-	sups = elem.find_all('sup')
-	for i in sups:
-		i.replaceWith(replaceSuperscript(i.string))
-	text = elem.get_text(' ', strip=True)
-	text = text.replace(u' %sup%', '')
+	text = elem.get_text()
 	text = re.sub('\n', ' ', text)
 	text = re.sub('\s{2,}', ' ', text)
+	text = text.strip()
 	return text
-	
+
 
 if __name__ == "__main__":
     try:
