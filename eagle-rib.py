@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import pywikibot, os, webbrowser, re
+import pywikibot, os, webbrowser, re, csv
 from bs4 import BeautifulSoup
 
 DATA_DIR = '/Users/pietro/EAGLE-data/rib/'
 INDEX_FILE = 'doclist.xml'
+ID_FILE = 'RIB-EDH-TM.txt'
 BASE_URL = 'http://romaninscriptionsofbritain.org/rib/inscriptions/'
 
 PUB_AUTHOR = 'Scott Vanderbilt'
@@ -26,11 +27,19 @@ def main():
 		site = pywikibot.Site('en', 'eagle').data_repository()
 	
 	# Process index file to get the list of files
-	soup = BeautifulSoup(open(DATA_DIR + INDEX_FILE))
-	resources = soup.list.find_all('resource')
-	fileList = []
-	for r in resources:
-		fileList.append(r['filename'])
+	with open(DATA_DIR + INDEX_FILE) as indexfile:
+		soup = BeautifulSoup(indexfile)
+		resources = soup.list.find_all('resource')
+		fileList = []
+		for r in resources:
+			fileList.append(r['filename'])
+	
+	# Process CSV files with ID mappings
+	id_map = {}
+	with open(DATA_DIR + ID_FILE, 'rb') as csvfile:
+		reader = csv.reader(csvfile, delimiter='\t')
+		for row in reader:
+			id_map[row[2]] = {'edh': row[0], 'tm': row[1]}
 	
 	for fileName in fileList:
 		data = {} # Resets element info
@@ -50,11 +59,12 @@ def main():
 		pywikibot.output('Processing file ' + DATA_DIR + fileName)
 		pywikibot.output('Label: ' + data['label'])
 		
-		bibl = soup.teiheader.filedesc.sourcedesc.bibl
-		
 		# Description
-		data['description'] = elementText(bibl)
-		pywikibot.output('Description: ' + data['description'])
+		try:
+			data['description'] = elementText(soup.find('text').listbibl.bibl)
+			pywikibot.output('Description: ' + data['description'])
+		except:
+			pywikibot.output('WARNING: no description!')
 		
 		# Translation EN:
 		transElem = soup.find('div', type='translation')
@@ -79,6 +89,8 @@ def main():
 		licenseItem = soup.teiheader.filedesc.publicationstmt.licence
 		data['ipr'] = elementText(licenseItem) + ' ' + licenseItem['target']
 		pywikibot.output('IPR: ' + data['ipr'])
+		
+		bibl = soup.teiheader.filedesc.sourcedesc.bibl
 		
 		# Publication title
 		data['pubTitle'] = elementText(bibl.title)
@@ -111,13 +123,19 @@ def main():
 			data['authors'].append(elementText(au))
 		pywikibot.output('Authors: ' + ', '.join(data['authors']))
 		
+		# TM ID
+		if data['rib_id'] in id_map and id_map[data['rib_id']]['tm']:
+			data['tm_id'] = id_map[data['rib_id']]['tm']
+			pywikibot.output('TM ID: ' + data['tm_id'])
+		
 		# EDH ID
 		edh_ref = soup.find('text').find('ref', target='bibA00118')
 		if edh_ref:
-			data['edh'] = elementText(edh_ref.find_next_sibling('biblscope', unit='dbid'))
-			pywikibot.output('EDH ID: ' + data['edh'])
-		else:
-			pywikibot.output('WARNING: no EDH ID found!')
+			data['edh_id'] = elementText(edh_ref.find_next_sibling('biblscope', unit='dbid'))
+			pywikibot.output('EDH ID: ' + data['edh_id'])
+		elif data['rib_id'] in id_map and id_map[data['rib_id']]['edh']:
+			data['edh_id'] = id_map[data['rib_id']]['edh']
+			pywikibot.output('EDH ID: ' + data['edh_id'])
 		
 		pywikibot.output('') # newline
 		
@@ -136,7 +154,12 @@ def main():
 		
 		if not dryrun and choice in ['Y', 'y']:
 			page = pywikibot.ItemPage(site)
-			page.editEntity({'labels': {'en': data['label']}, 'descriptions':{'en': data['description']}})
+			
+			entityData = {'labels': {'en': data['label']}}
+			if 'description' in data:
+				entityData['descriptions'] = {'en': data['description']}
+			
+			page.editEntity(entityData)
 			page.get()
 			
 			ribidClaim = pywikibot.Claim(site, 'P63')
@@ -147,8 +170,10 @@ def main():
 			pubAuthorClaim.setTarget(data['pubAuthor'])
 			ribidClaim.addSource(pubAuthorClaim)
 			
-			if 'edh' in data:
-				addClaimToItem(site, page, 'P24', data['edh'])
+			if 'edh_id' in data:
+				addClaimToItem(site, page, 'P24', data['edh_id'])
+			if 'tm_id' in data:
+				addClaimToItem(site, page, 'P3', data['tm_id'])
 			
 			addClaimToItem(site, page, 'P25', data['ipr'])
 			
