@@ -110,7 +110,8 @@ def main():
 		
 		# Pages
 		data['pages'] = elementText(bibl.find('biblscope', unit='pp'))
-		pywikibot.output('Pages: ' + data['pages'])
+		if data['pages']:
+			pywikibot.output('Pages: ' + data['pages'])
 		
 		# Year
 		data['year'] = elementText(bibl.date)
@@ -196,9 +197,10 @@ def main():
 			volumeClaim.setTarget(data['volume'])
 			sources.append(volumeClaim)
 			
-			pagesClaim = pywikibot.Claim(site, 'P30')
-			pagesClaim.setTarget(data['pages'])
-			sources.append(pagesClaim)
+			if data['pages']:
+				pagesClaim = pywikibot.Claim(site, 'P30')
+				pagesClaim.setTarget(data['pages'])
+				sources.append(pagesClaim)
 			
 			publisherClaim = pywikibot.Claim(site, 'P41')
 			publisherClaim.setTarget(data['publisher'])
