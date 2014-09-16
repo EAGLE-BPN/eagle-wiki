@@ -117,10 +117,10 @@ def main():
 					itemLabel = item['labels'].values()[0]['value']
 				
 				for claimDict in item['claims'][propertyId]:
-					claim = pywikibot.Claim.fromJSON(repo, claimDict)
+					claimValue = claimDict['mainsnak']['datavalue']['value']
 					output.append( {
 						'title': itemTitle,
-						'property': claim.getTarget(),
+						'property': claimValue,
 						'label': itemLabel } )
 	
 	if sort == SORT_TITLES:
@@ -131,7 +131,7 @@ def main():
 		output = sorted(output, key=operator.itemgetter('label'))
 	
 	for i in output:
-		pywikibot.output('* [[' + i['title'] + '|' + i[show] + ']]')
+		pywikibot.output('* [[' + i['title'] + '|' + i[show] + ']]', toStdout=True)
 
 def loadItems(repo, idList):
 	chunks = divide(idList, API_LIMIT)
