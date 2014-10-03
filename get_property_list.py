@@ -101,7 +101,10 @@ def main():
 		for i in refGen:
 			if i.namespace() == ITEM_NAMESPACE: # quite ugly, to improve
 				ids.append(i.title(withNamespace=False))
-		
+	
+	if len(ids) == 0:
+		return
+	
 	result = loadItems(repo, ids)
 	output = [] # List of dictionaries {title, prop}
 	
