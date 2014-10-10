@@ -52,12 +52,6 @@ Output:
 
 """
 
-SORT_TITLES = 'title'
-SORT_PROP = 'property'
-SORT_LABEL = 'label'
-API_LIMIT = 500
-ITEM_NAMESPACE = 120
-
 def main():
 	
 	# pywikibot/families/eagle_family.py
@@ -82,10 +76,26 @@ def main():
 		if arg.startswith('-label-lang:'):
 			labelLang = arg.replace('-label-lang:', '')
 	
+	
+	output = getItemsForProperty(repo, prop, show, sort, labelLang, fileName)
+	
+	for i in output:
+		pywikibot.output('* [[' + i['title'] + '|' + i[show] + ']]', toStdout=True)
+
+
+def getItemsForProperty(repo, property, show='property', sort=None, labelLang='en', fileName=None):
+	
+	# Returns a list of dictionaries {title, property, label}
+	
+	SORT_TITLES = 'title'
+	SORT_PROP = 'property'
+	SORT_LABEL = 'label'
+	ITEM_NAMESPACE = 120
+
 	if sort == None:
 		sort = show
-	
-	propertyId = 'p' + prop # Example: "p11"
+		
+	propertyId = 'p' + str(property) # Example: "p11"
 	
 	ids = [] # Array of item IDs
 	if fileName:
@@ -94,7 +104,7 @@ def main():
 				id = id.strip() # strip newline
 				ids.append(id)
 	else:
-		propPage = pywikibot.PropertyPage(repo, 'Property:P' + prop)
+		propPage = pywikibot.PropertyPage(repo, 'Property:P' + str(property))
 		refGen = pywikibot.pagegenerators.ReferringPageGenerator(propPage, followRedirects=False,
 						   withTemplateInclusion=False,
 						   onlyTemplateInclusion=False)
@@ -106,7 +116,7 @@ def main():
 		return
 	
 	result = loadItems(repo, ids)
-	output = [] # List of dictionaries {title, prop}
+	output = []
 	
 	for id, item in result.items():
 		if 'claims' in item.keys():
@@ -133,10 +143,13 @@ def main():
 	elif sort == SORT_LABEL:
 		output = sorted(output, key=operator.itemgetter('label'))
 	
-	for i in output:
-		pywikibot.output('* [[' + i['title'] + '|' + i[show] + ']]', toStdout=True)
+	return output
+	
 
 def loadItems(repo, idList):
+	
+	API_LIMIT = 500
+	
 	chunks = divide(idList, API_LIMIT)
 	result = {}
 	for ids in chunks:
