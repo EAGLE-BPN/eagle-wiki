@@ -33,33 +33,34 @@ class ListBot(pywikibot.bot.Bot):
 	
 	list_set = {
 		'translations': {
-			'lists': {
-				11: 'Translation EN',
-				12: 'Translation DE',
-				13: 'Translation IT',
-				14: 'Translation ES',
-				15: 'Translation FR',
-				19: 'Translation HU',
-			},
+			'lists': [
+				{'page': 'Translation EN', 'property': 11, 'show': 'label'},
+				{'page': 'Translation DE', 'property': 12, 'show': 'label'},
+				{'page': 'Translation IT', 'property': 13, 'show': 'label'},
+				{'page': 'Translation ES', 'property': 14, 'show': 'label'},
+				{'page': 'Translation FR', 'property': 15, 'show': 'label'},
+				{'page': 'Translation HU', 'property': 19, 'show': 'label'},
+			],
 			'category': 'Lists by translation language',	
 		},
 		
 		'identifiers': {
-			'lists': {
-				22: 'Translations of the Inscriptions of Hispania Epigrafica',
-				24: 'EDH List',
-				3: 'TM List',
-				33: 'Petrae',
-				34: 'UEL List',
-				37: 'EDB List',
-				38: 'EDR List',
-				47: 'Last Statues of Antiquity',
-				48: 'ELTE',
-				50: 'Inscriptions of Aphrodisias',
-				51: 'Attic Inscriptions Online',
-				59: 'UBB',
-				63: 'Roman Inscriptions of Britain',
-			},
+			'lists': [
+				{'page': 'Translations of the Inscriptions of Hispania Epigrafica', 'property': 22, 'show': 'label'},
+				{'page': 'EDH List', 'property': 24, 'show': 'property'},
+				{'page': 'TM List', 'property': 3, 'show': 'property'},
+				{'page': 'Petrae', 'property': 33, 'show': 'label'},
+				{'page': 'UEL List', 'property': 34, 'show': 'label'},
+				{'page': 'EDB List', 'property': 37, 'show': 'label'},
+				{'page': 'EDR List', 'property': 38, 'show': 'label'},
+				{'page': 'Last Statues of Antiquity', 'property': 47, 'show': 'label'},
+				{'page': 'ELTE', 'property': 48, 'show': 'label'},
+				{'page': 'Inscriptions of Aphrodisias', 'property': 50, 'show': 'label'},
+				{'page': 'Attic Inscriptions Online', 'property': 51, 'show': 'label'},
+				{'page': 'UBB', 'property': 59, 'show': 'label'},
+				{'page': 'Roman Inscriptions of Britain', 'property': 63, 'show': 'label'},
+				{'page': 'Translations of the Inscriptions of Roman Tripolitania', 'property': 40, 'show': 'label'},
+			],
 			'category': 'Lists by collection',	
 		},
 	}
@@ -77,17 +78,18 @@ class ListBot(pywikibot.bot.Bot):
 		
 		selectedSet = self.getOption('selectedSet')
 		
-		for property, page_title in self.list_set[selectedSet]['lists'].items():
-			self.current_page = pywikibot.Page(repo, page_title)
+		for i in self.list_set[selectedSet]['lists']:
+			self.current_page = pywikibot.Page(repo, i['page'])
 			
 			oldtext = self.current_page.get()
 			
-			itemList = get_property_list.getItemsForProperty(repo, property, show='label', sort=None, labelLang='en', fileName=None)
+			itemList = get_property_list.getItemsForProperty(repo, i['property'], show=i['show'], sort=None, labelLang='en')
 			
 			newtext = '<div style="column-count: 5; -webkit-column-count: 5; -moz-column-count: 5;">'
-			for i in itemList:
-				newtext += "\n" + '* [[' + i['title'] + '|' + i['label'] + ']]'
-			newtext += "\n</div>\n\n[[Category:" +	self.list_set[selectedSet]['category'] + "]]\n"
+			for j in itemList:
+				linkTitle = j[i['show']]
+				newtext += "\n" + '* [[' + j['title'] + '|' + linkTitle + ']]'
+			newtext += "\n</div>\n\n[[Category:" +	self.list_set[selectedSet]['category'] + "]]"
 			
 			self.userPut(self.current_page, oldtext, newtext, comment='Updating list')
 
