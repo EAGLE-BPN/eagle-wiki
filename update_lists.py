@@ -16,17 +16,20 @@ Usage:
 def main():
 	
 	selectedSet = None
+	always = False
 	
 	# Handles command-line arguments for pywikibot.
 	for arg in pywikibot.handleArgs():
 		if arg.startswith('-list-set:'):
 			selectedSet = arg.replace('-list-set:', '')
+		if arg.startswith('-always'):
+			always=True
 	
 	if selectedSet == None:
 		pywikibot.output('Argument -list-set is mandatory!')
 		return
 		
-	bot = ListBot(always=False, selectedSet=selectedSet)
+	bot = ListBot(always=always, selectedSet=selectedSet)
 	bot.run()
 
 class ListBot(pywikibot.bot.Bot):
@@ -66,9 +69,9 @@ class ListBot(pywikibot.bot.Bot):
 	}
 
 	availableOptions = {
-        'always': False,  # ask for confirmation when putting a page?
-        'selectedSet': None,
-    }
+		'always': False,  # ask for confirmation when putting a page?
+		'selectedSet': None,
+	}
 	
 	def run(self):
 		
