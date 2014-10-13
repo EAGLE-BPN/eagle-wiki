@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
 
+"""
+
+Accepted options:
+
+	-dry
+		Dry run: don't edit the wiki, but process and print all the data.
+		It's useful together with -always to check for crashes in the script before launching the bot.
+		
+	-always
+		Don't ask for confirmation before submitting a new item to the wiki.
+
+"""
+
 import pywikibot, csv
 
 DATA_FILE = '/Users/pietro/EAGLE-data/petrae_translation.csv'

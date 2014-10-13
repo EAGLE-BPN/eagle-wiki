@@ -86,7 +86,7 @@ class ListBot(pywikibot.bot.Bot):
 			
 			oldtext = self.current_page.get()
 			
-			itemList = get_property_list.getItemsForProperty(repo, i['property'], show=i['show'], sort=None, labelLang='en')
+			itemList = get_property_list.getItemsForProperty(repo, i['property'], sort=i['show'], labelLang='en')
 			
 			newtext = '<div style="column-count: 5; -webkit-column-count: 5; -moz-column-count: 5;">'
 			for j in itemList:

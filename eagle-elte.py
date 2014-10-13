@@ -1,5 +1,21 @@
 # -*- coding: utf-8 -*-
 
+"""
+
+Accepted options:
+	
+	-dry
+		Dry run: don't edit the wiki, but process and print all the data.
+		It's useful together with -always to check for crashes in the script before launching the bot.
+		
+	-always
+		Don't ask for confirmation before submitting a new item to the wiki.
+		
+	-start:<bohry_id>
+		Start from the item whose Bohry id is <dai_id>. Useful for resuming an interrupted import.
+
+"""
+
 import pywikibot, csv, re, urllib2
 import xml.etree.ElementTree as ET
 

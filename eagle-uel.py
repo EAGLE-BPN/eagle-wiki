@@ -1,8 +1,23 @@
 # -*- coding: utf-8 -*-
+"""
 
-# Importing Ubi Erat Lupa monuments
-# XML: http://www.ubi-erat-lupa.org/eagle/monuments.xml.php
-# Guide: http://www.ubi-erat-lupa.org/eagle/
+Importing Ubi Erat Lupa monuments
+XML: http://www.ubi-erat-lupa.org/eagle/monuments.xml.php
+Guide: http://www.ubi-erat-lupa.org/eagle/
+
+Accepted options:
+
+	-dry
+		Dry run: don't edit the wiki, but process and print all the data.
+		It's useful together with -always to check for crashes in the script before launching the bot.
+		
+	-always
+		Don't ask for confirmation before submitting a new item to the wiki.
+		
+	-start:<uel_id>
+		Start from item whose UEL id is <uel_id>. Useful for resuming an interrupted import.
+
+"""
 
 import pywikibot, re
 import xml.etree.ElementTree as ET

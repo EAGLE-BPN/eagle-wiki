@@ -1,5 +1,21 @@
 # -*- coding: utf-8 -*-
 
+"""
+
+Accepted options:
+
+	-dry
+		Dry run: don't edit the wiki, but process and print all the data.
+		It's useful together with -always to check for crashes in the script before launching the bot.
+		
+	-always
+		Don't ask for confirmation before submitting a new item to the wiki.
+		
+	-start:<dai_id>
+		Start from the item whose DAI id is <dai_id>. Useful for resuming an interrupted import.
+
+"""
+
 import pywikibot, re, os
 from bs4 import BeautifulSoup
 

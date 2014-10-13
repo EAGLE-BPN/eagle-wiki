@@ -5,51 +5,65 @@ from pywikibot import pagegenerators
 
 """
 
-This script prints out a list of ItemPages.
-The title of the link is the content of the property specified via the -property parameter.
+This script prints out a list of links to items having the property given via the -property argument.
+The output is sent to stdout so it can be easily redirected to a file.
 
-Parameters:
-	-file:
-		Optional argument. File containing the IDs of the elements to list, one per row, without brackets.
-		If not specified, the script fetches all items containing the property indicated with -property.
-	
-	-property:
-		Number of the property to get.
-		Items not containing the specified property will be ignored.
+Accepted options:
+
+	-property:<N>
+		It's the only mandatory option.
+		Example:
+			-property:28
+		All and only the items containing this property will be fetched.
 		
-	-show: the title of the links
+	-show:[ property | label | title ]
+		How the links should be titled.
 		'property': the title of each link is the text of the property (default)
 		'label': the title of each link is the item label
 		'title': the title of each link is the item title
 		Optional argument.
 		
-	-sort:
+	-sort:[ property | label | title ]
 		'title': sorts by item title
 		'property': sort by the property specified via -property (default)
 		'label': sort by item label
 		Default: same as "show".
 	
-	-label-lang:
-		The language of the label if "-show:label" is specified (it, en, fr...)
+	-label-lang:[ en | it | fr | ... ]
+		The language of the label if "-show:label" is given.
 		"en" is the default.
 	
-Example:
+	-file:<filename>
+		Optional argument. File containing the IDs of the elements to fetch, one per row, without brackets.
+		The format of the titles must be "Qxxxx" (without namespace). See also the example below.
+		If -file is indicated, the script will fetch and list (by title, label or property
+		as indicated by -show) all and only the elements in the file.
+	
+Example #1:
 
-python get_property_list.py -file:new_items.txt -property:24 -show:property
+	python get_property_list.py -file:new_items.txt -property:24 -show:property
 
-Content of new_items.txt:
-Q4700
-Q4701
-Q4706
+	Content of new_items.txt:
+	Q4700
+	Q4701
+	Q4706
 
-Output:
+	Output:
 
-* [[Item:Q4700|HD016153]]
-* [[Item:Q4701|HD065254]]
-* [[Item:Q4706|HD065353]]
+	* [[Item:Q4700|HD016153]]
+	* [[Item:Q4701|HD065254]]
+	* [[Item:Q4706|HD065353]]
 
-("HD..." is the property P24 of the items in this case)
+	("HD..." is the property P24 of the items in this case)
 
+
+Example #2: 
+
+	getting the list for http://eagle-network.eu/wiki/index.php/Inscriptions_of_Aphrodisias
+	and saving it in file insaph_list.txt
+
+	python get_property_list.py -property:50 -show:property > insaph_list.txt
+	
 """
 
 def main():
@@ -76,25 +90,45 @@ def main():
 		if arg.startswith('-label-lang:'):
 			labelLang = arg.replace('-label-lang:', '')
 	
-	
-	output = getItemsForProperty(repo, prop, show, sort, labelLang, fileName)
+	if sort == None:
+		sort = show
+	output = getItemsForProperty(repo, prop, sort, labelLang, fileName)
 	
 	for i in output:
 		pywikibot.output('* [[' + i['title'] + '|' + i[show] + ']]', toStdout=True)
 
 
-def getItemsForProperty(repo, property, show='property', sort=None, labelLang='en', fileName=None):
+def getItemsForProperty(repo, property, sort='property', labelLang='en', fileName=None):
 	
-	# Returns a list of dictionaries {title, property, label}
+	"""
+	Returns a list of dictionaries {title:"Qxxx", property:<N>, label:"<Label>"}
+	This function can be called from other scripts.
+	
+	Arguments:
+		repo:
+			Wikidata repository
+			
+		property:
+			number of the property to fetch
+			
+		sort:[ property | title | label ]
+			how to sort the list of links
+			
+		labelLang:[ en | it | de | ... ]
+			language of the label
+			
+		fileName:<filename>
+			Optional argument. File containing the IDs of the elements to fetch, one per row, without brackets.
+			The format of the titles must be "Qxxxx" (without namespace). See also the example below.
+			If -file is indicated, the function will fetch and list all and only the elements in the file.
+			
+	"""
 	
 	SORT_TITLES = 'title'
 	SORT_PROP = 'property'
 	SORT_LABEL = 'label'
 	ITEM_NAMESPACE = 120
-
-	if sort == None:
-		sort = show
-		
+	
 	propertyId = 'p' + str(property) # Example: "p11"
 	
 	ids = [] # Array of item IDs
@@ -148,6 +182,8 @@ def getItemsForProperty(repo, property, show='property', sort=None, labelLang='e
 
 def loadItems(repo, idList):
 	
+	# Loads the item data from a list of item ids, from the Wikibase API.
+	
 	API_LIMIT = 500
 	
 	chunks = divide(idList, API_LIMIT)
@@ -157,9 +193,12 @@ def loadItems(repo, idList):
 		result.update(repo.loadcontent(identification={'ids': idString})) # API call
 	return result
 
-# Divides a list in blocks of size "size".
-# Returns a list of lists.
+
 def divide(theList, size):
+	
+	# Divides a list in blocks of size "size".
+	# Returns a list of lists.
+
 	result = []
 	lst = list(theList) # copy
 	while len(lst)>size:
@@ -167,6 +206,7 @@ def divide(theList, size):
 		lst = lst[size:]
 	result.append(lst)
 	return result
+
 
 if __name__ == "__main__":
 	try:

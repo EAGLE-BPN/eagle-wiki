@@ -1,5 +1,20 @@
 # -*- coding: utf-8 -*-
 
+"""
+
+Accepted parameters:
+	-dry
+		Dry run: don't edit the wiki, but process and print all the data.
+		It's useful together with -always to check for crashes in the script before launching the bot.
+		
+	-always
+		Don't ask for confirmation before submitting a new item to the wiki.
+		
+	-start:<filename>
+		Start from file "<filename>". Useful for resuming an interrupted import.
+
+"""
+
 import pywikibot, os, re
 import xml.etree.ElementTree as ET
 

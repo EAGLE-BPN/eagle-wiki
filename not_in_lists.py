@@ -5,10 +5,13 @@ from pywikibot import pagegenerators
 
 """
 
-This script prints out a list of items which aren't present in any of the lists taken from a category.
-The category containing the lists to check is indicated by the -listcat parameter.
-
 Usage:
+	python not_in_lists.py -listcat:<Category>
+	
+This script prints out a list of items (as links) which aren't present in any of the lists taken from a category.
+The title of the category containing the lists to check is indicated by the -listcat parameter.
+
+Examples:
 	python not_in_lists.py -listcat:"Lists by translation language"
 	python not_in_lists.py -listcat:"Lists by collection"
 
