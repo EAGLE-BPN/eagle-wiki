@@ -98,10 +98,16 @@ def main():
 		pywikibot.output('* [[' + i['title'] + '|' + i[show] + ']]', toStdout=True)
 
 
-def getItemsForProperty(repo, property, sort='property', labelLang='en', fileName=None):
+def getItemsForProperty(repo, property, sort='property', labelLang='en', fileName=None, additionalProperties=[]):
 	
 	"""
-	Returns a list of dictionaries {title:"Qxxx", property:<N>, label:"<Label>"}
+	Returns a list of dictionaries
+	{
+		title:"Qxxx",
+		property:<N>,
+		label:"<Label>",
+		additionalProperties:{'1': 'dfnj', '2': 'sdfsad'},
+	}
 	This function can be called from other scripts.
 	
 	Arguments:
@@ -121,7 +127,9 @@ def getItemsForProperty(repo, property, sort='property', labelLang='en', fileNam
 			Optional argument. File containing the IDs of the elements to fetch, one per row, without brackets.
 			The format of the titles must be "Qxxxx" (without namespace). See also the example below.
 			If -file is indicated, the function will fetch and list all and only the elements in the file.
-			
+		
+		additionalProperties:['1, '45', '92', ...]
+			list of additional properties to fetch
 	"""
 	
 	SORT_TITLES = 'title'
@@ -165,10 +173,20 @@ def getItemsForProperty(repo, property, sort='property', labelLang='en', fileNam
 				
 				for claimDict in item['claims'][propertyId]:
 					claimValue = claimDict['mainsnak']['datavalue']['value']
-					output.append( {
+					outputItem = {
 						'title': itemTitle,
 						'property': claimValue,
-						'label': itemLabel } )
+						'label': itemLabel,
+					 }
+				
+				outputItem['additionalProperties'] = {}
+				for prop in additionalProperties:
+					if ('p'+prop) in item['claims'].keys():
+						for claimDict in item['claims']['p'+prop]:
+							claimValue = claimDict['mainsnak']['datavalue']['value']
+							outputItem['additionalProperties'][prop] = claimValue
+				
+				output.append(outputItem)
 	
 	if sort == SORT_TITLES:
 		output = sorted(output, key=operator.itemgetter('title'))
