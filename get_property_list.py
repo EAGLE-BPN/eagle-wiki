@@ -202,7 +202,7 @@ def loadItems(repo, idList):
 	
 	# Loads the item data from a list of item ids, from the Wikibase API.
 	
-	API_LIMIT = 500
+	API_LIMIT = 50
 	
 	chunks = divide(idList, API_LIMIT)
 	result = {}

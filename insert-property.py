@@ -5,6 +5,11 @@ import get_property_list
 
 """
 
+This script matches Wikibase items with a property (used as "identifier")
+and appends them a new claim with a new property.
+
+It uses a CSV file to find the matches.
+
 Arguments:
 	-identifier:<N>
 		Number of the property needed to identify the items
@@ -18,6 +23,9 @@ Arguments:
 		Format:
 		X;Y
 
+Example usage:
+	python insert-property.py -file:TM_EDR.csv -identifier:38 -insert:3
+	
 """
 
 def main():
