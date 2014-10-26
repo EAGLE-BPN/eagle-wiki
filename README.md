@@ -70,8 +70,8 @@ Logging in to eagle:en as Pietrodn
 Logged in on eagle:en as Pietrodn.
 
 
-$ <b>echo "PYWIKIBOT2_DIR=~/eagle/core/" >> ~/.profile</b>
-$ <b>echo "PYTHONPATH=$PYTHONPATH:~/eagle/core/" >> ~/.profile</b>
+$ <b>echo "export PYWIKIBOT2_DIR=~/eagle/core/" >> ~/.profile</b>
+$ <b>echo "export PYTHONPATH=$PYTHONPATH:~/eagle/core/" >> ~/.profile</b>
 $ <b>source ~/.profile</b>
 $ <b>cd ../eagle-wiki</b>
 </pre>
