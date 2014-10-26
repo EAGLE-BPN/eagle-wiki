@@ -1,5 +1,6 @@
-Wikimedia EAGLE import project
-=====
+# Wikimedia EAGLE import project
+
+## About
 
 The Python scripts import the EAGLE data into the [EAGLE Wikibase wiki](http://www.eagle-network.eu/wiki/index.php/).
 Import scripts have been developed for the following datasets:
@@ -20,13 +21,15 @@ http://eagle-network.eu/
 
 Using [pywikipediabot rewrite branch](https://github.com/wikimedia/pywikibot-core).
 
-The script uses extensively the Python [regex](http://docs.python.org/2/library/re.html) module, the [csv](http://docs.python.org/2/library/csv.html) module, [BeautifulSoup 4](http://www.crummy.com/software/BeautifulSoup/bs4/doc/), and the [XML etree](http://docs.python.org/2/library/xml.etree.elementtree.html) module.
+The script library needs and uses extensively the Python [regex](http://docs.python.org/2/library/re.html) module, the [csv](http://docs.python.org/2/library/csv.html) module, [BeautifulSoup 4](http://www.crummy.com/software/BeautifulSoup/bs4/doc/), and the [XML etree](http://docs.python.org/2/library/xml.etree.elementtree.html) module.
 
-Installation
-====
-This brief guide covers the installation of the pywikibot "core" library as well the setup of this library for editing EAGLE Wiki.
+## Installation
 
-We'll assume that your shell is Bash and you're installing the scripts in the directory ~/eagle. Change the paths accordingly.
+This brief how-to covers the installation of the pywikibot "core" library as well the setup of this library for editing EAGLE Wiki.
+Its aim is to give you a working environment for further development.
+
+We'll assume that your shell is Bash and you're installing the scripts in the directory `~/eagle`. Change the paths accordingly.
+We're also generating the user-config.py files from scratch; if you are an advanced user you'll just need to add the relevant line for EAGLE Wiki (family="eagle"; lang="en").
 
 Please note that in the installation process we have to manually apply [this patch](https://gerrit.wikimedia.org/r/#/c/167532/) to the pywikibot source in order to ensure compatibility with the older version of Wikibase in EAGLE Wiki.
 
