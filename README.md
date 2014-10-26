@@ -23,6 +23,8 @@ Using [pywikipediabot rewrite branch](https://github.com/wikimedia/pywikibot-cor
 
 The script library needs and uses extensively the Python [regex](http://docs.python.org/2/library/re.html) module, the [csv](http://docs.python.org/2/library/csv.html) module, [BeautifulSoup 4](http://www.crummy.com/software/BeautifulSoup/bs4/doc/), and the [XML etree](http://docs.python.org/2/library/xml.etree.elementtree.html) module.
 
+The raw data used by the scripts is contained in the file `EAGLE-data.zip`.
+
 ## Installation
 
 This brief how-to covers the installation of the pywikibot "core" library as well the setup of this library for editing EAGLE Wiki.
@@ -80,6 +82,7 @@ $ <b>echo "export PYWIKIBOT2_DIR=~/eagle/core/" >> ~/.profile</b>
 $ <b>echo "export PYTHONPATH=$PYTHONPATH:~/eagle/core/" >> ~/.profile</b>
 $ <b>source ~/.profile</b>
 $ <b>cd ../eagle-wiki</b>
+$ <b>unzip EAGLE-data.zip</b>
 </pre>
 
 Now we can run an example script:
