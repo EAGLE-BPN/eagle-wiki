@@ -28,6 +28,8 @@ This brief guide covers the installation of the pywikibot "core" library as well
 
 We'll assume that your shell is Bash and you're installing the scripts in the directory ~/eagle. Change the paths accordingly.
 
+Please note that in the installation process we have to manually apply [this patch](https://gerrit.wikimedia.org/r/#/c/167532/) to the pywikibot source in order to ensure compatibility with the older version of Wikibase in EAGLE Wiki.
+
 <pre>
 $ <b>mkdir eagle</b>
 $ <b>cd eagle</b>
@@ -35,6 +37,7 @@ $ <b>git clone --recursive https://gerrit.wikimedia.org/r/pywikibot/core.git</b>
 $ <b>git clone https://github.com/EAGLE-BPN/eagle-wiki.git</b>
 $ <b>cp eagle-wiki/eagle_family.py core/pywikibot/families/eagle_family.py</b>
 $ <b>cd core</b>
+$ <b>git fetch https://gerrit.wikimedia.org/r/pywikibot/core refs/changes/32/167532/2 && git cherry-pick FETCH_HEAD</b>
 
 $ <b>python generate_user_files.py</b>
 
