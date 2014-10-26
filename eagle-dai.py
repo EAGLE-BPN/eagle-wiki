@@ -19,7 +19,7 @@ Accepted options:
 import pywikibot, re, os
 from bs4 import BeautifulSoup
 
-DATA_FOLDER = '/Users/pietro/EAGLE-data/DAI/'
+DATA_FOLDER = 'EAGLE-data/DAI/'
 AUTHOR = 'Arachne - Deutsches Archäologisches Institut'
 IPR = 'CC0'
 

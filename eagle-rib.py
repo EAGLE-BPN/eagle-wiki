@@ -19,7 +19,7 @@ Accepted options:
 import pywikibot, os, webbrowser, re, csv
 from bs4 import BeautifulSoup
 
-DATA_DIR = '/Users/pietro/EAGLE-data/rib/'
+DATA_DIR = 'EAGLE-data/rib/'
 INDEX_FILE = 'doclist.xml'
 ID_FILE = 'RIB-EDH-TM.txt'
 BASE_URL = 'http://romaninscriptionsofbritain.org/rib/inscriptions/'

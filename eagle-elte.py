@@ -19,7 +19,7 @@ Accepted options:
 import pywikibot, csv, re, urllib2
 import xml.etree.ElementTree as ET
 
-DATA_FILE = '/Users/pietro/EAGLE-data/elte.csv'
+DATA_FILE = 'EAGLE-data/elte.csv'
 
 def main():
 	always = dryrun = startsWith = False

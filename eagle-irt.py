@@ -19,7 +19,7 @@ Accepted options:
 import pywikibot, os, re, csv
 import xml.etree.ElementTree as ET
 
-DATA_DIR = '/Users/pietro/EAGLE-data/British School of Rome/'
+DATA_DIR = 'EAGLE-data/British School of Rome/'
 
 LICENSE = "Creative Commons licence Attribution UK 2.0 (http://creativecommons.org/licenses/by/2.0/uk/). All reuse or distribution of this work must contain somewhere a link back to the URL http://irt.kcl.ac.uk/"
 

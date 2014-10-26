@@ -19,7 +19,7 @@ Accepted options:
 import pywikibot, re
 from bs4 import BeautifulSoup
 
-FILE_PATH = '/Users/pietro/EAGLE-data/ubbeagleALL.xml'
+FILE_PATH = 'EAGLE-data/ubbeagleALL.xml'
 AUTHORITY = 'Universitatea Babeş-Bolyai'
 
 def main():

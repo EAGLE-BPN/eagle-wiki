@@ -19,7 +19,7 @@ Accepted options:
 import pywikibot, re, os
 from bs4 import BeautifulSoup
 
-DATA_FOLDER = '/Users/pietro/EAGLE-data/LSA-processed/'
+DATA_FOLDER = 'EAGLE-data/LSA-processed/'
 IPR = 'University of Oxford'
 PUBLISHER = 'Last Statue of Antiquities'
 YEAR = '2012'

@@ -15,7 +15,7 @@ Accepted options:
 
 import pywikibot, csv
 
-DATA_FILE = '/Users/pietro/EAGLE-data/petrae_translation.csv'
+DATA_FILE = 'EAGLE-data/petrae_translation.csv'
 
 def main():
 	always = dryrun = False

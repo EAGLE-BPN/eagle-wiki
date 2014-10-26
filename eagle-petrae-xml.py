@@ -19,7 +19,7 @@ Accepted options:
 import pywikibot, os, csv, webbrowser, re
 from bs4 import BeautifulSoup
 
-DATA_DIR = '/Users/pietro/EAGLE-data/Petrae/'
+DATA_DIR = 'EAGLE-data/Petrae/'
 
 def main():
 	always = dryrun = startsWith = False

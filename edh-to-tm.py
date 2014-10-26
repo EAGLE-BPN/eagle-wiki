@@ -11,7 +11,7 @@
 
 import pywikibot, csv
 
-DATA_FILE = '/Users/pietro/EAGLE-data/trismegistos_to_insert.csv'
+DATA_FILE = 'EAGLE-data/trismegistos_to_insert.csv'
 
 def main():
 	always = dryrun = startsWith = False

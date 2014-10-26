@@ -19,7 +19,7 @@ Accepted options:
 import pywikibot, os, webbrowser, re
 from bs4 import BeautifulSoup
 
-DATA_DIR = '/Users/pietro/EAGLE-data/AIO/data-new/'
+DATA_DIR = 'EAGLE-data/AIO/data-new/'
 
 LICENSE = 'Creative Commons Attribution-ShareAlike 3.0 http://creativecommons.org/licenses/by-sa/3.0/'
 AUTHOR = 'Stephen Lambert'
