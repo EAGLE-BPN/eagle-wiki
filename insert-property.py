@@ -18,7 +18,7 @@ Arguments:
 	-file:<source.csv>
 		CSV file which has two columns:
 		1. the value of the property indicated in the argument -identifier;
-		2. the valute of the property -insert, to add to the items.
+		2. the value of the property -insert, to add to the items.
 		
 		Format:
 		X;Y
