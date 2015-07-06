@@ -68,10 +68,6 @@ Example #2:
 
 def main():
 	
-	# pywikibot/families/eagle_family.py
-	site = pywikibot.Site('en', 'eagle')
-	repo = site.data_repository()
-	
 	sort = None
 	fileName = None
 	labelLang = 'en'
@@ -92,6 +88,11 @@ def main():
 	
 	if sort == None:
 		sort = show
+		
+	# pywikibot/families/eagle_family.py
+	site = pywikibot.Site('en', 'eagle')
+	repo = site.data_repository()
+	
 	output = getItemsForProperty(repo, prop, sort, labelLang, fileName)
 	
 	for i in output:
