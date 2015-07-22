@@ -19,6 +19,8 @@ Accepted options:
 import pywikibot, csv, re, urllib2
 import xml.etree.ElementTree as ET
 
+elteinwiki = [1, 10, 107, 11, 112, 12, 13, 14, 15, 169,  17,  17,  18,  188,  19,  192,  2,  20,  21,  22,  23,  247,  25,  256,  27,  28,  3,  31,  35,  36,  38,  39,  4,  40,  41,  42,  43,  46,  47,  48,  49,  5,  50,  53,  54,  55,  56,  57,  58,  59,  6,  60,  61,  62,  63,  65,  66,  69,  7,  71,  73,  76,  77,  78,  8,  87,  88,  89,  9]
+
 DATA_FILE = 'EAGLE-data/elte.csv'
 
 def main():
@@ -38,8 +40,28 @@ def main():
 	
 	f = open(DATA_FILE, 'r')
 	reader = csv.reader(f, delimiter=";")
+	withtrans = []
+	notinwiki = []
+
 	for row in reader:
-		BorhyID = normalizeText(row[8])
+		if row[1] != '': 
+			withtrans.append(row)
+
+	for row in withtrans:
+		if row[8] != '': 
+			elteid = row[8]
+		else:
+			elteid = re.sub('HD','', row[9])
+
+		if int(elteid) not in elteinwiki:
+			notinwiki.append(row)
+
+	for row in notinwiki:
+
+		if row[8] != '': 
+			BorhyID = normalizeText(row[8])
+		else:
+			BorhyID = normalizeText(row[9])
 		if startsWith:
 			if BorhyID != startsWith:
 				continue # Skips files until start
