@@ -52,6 +52,7 @@ class ListBot(pywikibot.bot.Bot):
 				{'page': 'Translations of the Inscriptions of Hispania Epigrafica', 'property': 22, 'show': 'label'},
 				{'page': 'EDH List', 'property': 24, 'show': 'property'},
 				{'page': 'TM List', 'property': 3, 'show': 'property'},
+				{'page': 'IDEs List', 'property': 69, 'show': 'property'},
 				{'page': 'Petrae', 'property': 33, 'show': 'label'},
 				{'page': 'UEL List', 'property': 34, 'show': 'label'},
 				{'page': 'EDB List', 'property': 37, 'show': 'label'},
